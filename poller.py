@@ -13,14 +13,6 @@ begin_time = datetime.datetime.now()
 
 api_port = sys.argv[1]
 
-def distillData(rawData):
-    goodData = dict()
-    goodData["slotID"] = rawData["slotID"]
-    goodData["position"] = rawData["position"]
-    goodData["driver"] = rawData["driverName"]
-    goodData["lapsCompleted"] = rawData["lapsCompleted"]
-    return goodData
-
 liveInsertStmtPrefix = '''insert into red_flag_drivers_live_state (slot_id,laps_completed) values ('''
 liveInsertStmtSuffix = ''' on duplicate key update laps_completed = '''
 
@@ -68,8 +60,6 @@ def run():
     # update the live metrics
     for i in positionList:
         # print(i["slotID"])
-        data = distillData(i)
-        #print(data)
         liveInsertStmt = liveInsertStmtPrefix + str(i['slotID']) + ',' + str(i['lapsCompleted']) + ')' + liveInsertStmtSuffix + str(i['lapsCompleted'])
         #print(liveInsertStmt)
         dbCurs.execute(liveInsertStmt)

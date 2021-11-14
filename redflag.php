@@ -34,9 +34,11 @@ $state_query = $mysqli->query(
         red_flag_restart_info');
 
 while ($row = $state_query->fetch_assoc()) {
-    
-    $current_state[$row['rig_id']][$row['parameter_name']] = $row['value_name'];
+    SetGrid($row["driver_name"],$row["position"]);
+    SetLaps($row["driver_name"],$row["lapsCompleted"]);
 }
+
+#ready to start the race now
 
 
 
