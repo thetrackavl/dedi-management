@@ -8,8 +8,23 @@
 
 require 'db_conn.php';
 
-$api_host = '192.168.2.102';
-$api_port = 54351;
+$dedi_id = $_POST['dedi_id'];
+
+$mysqli = get_dbh();
+$dedi_info_query = $mysqli->query(
+    "SELECT
+        dedi_id,
+        dedi_ip,
+        dedi_api_port
+    FROM
+        dedicated_servers
+    WHERE
+        dedi_id = $dedi_id");
+
+$dedi_info = $dedi_info_query->fetch_assoc();
+
+$api_host = $dedi_info['dedi_ip'];
+$api_port = $dedi_info['dedi_api_port'];
 $api_url = 'http://'.$api_host.':'.$api_port;
 $chat_endpoint = '/rest/chat';
 
@@ -21,9 +36,6 @@ while ($session_state != 'WARMUP') {
     sleep(3);
     $session_state = GetSessionState();
 }
-
-
-$mysqli = get_dbh();
 
 $state_query = $mysqli->query(
     'SELECT
@@ -106,3 +118,5 @@ function CallAPI($method, $url, $data = false) {
 
     return $result;
 }
+
+?>

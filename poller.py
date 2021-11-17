@@ -11,12 +11,11 @@ def current_milli_time():
 
 begin_time = datetime.datetime.now()
 
-api_port = sys.argv[1]
+dedi_id = sys.argv[1]
 
-liveInsertStmtPrefix = '''insert into red_flag_drivers_live_state (slot_id,laps_completed) values ('''
-liveInsertStmtSuffix = ''' on duplicate key update laps_completed = '''
+liveInsertStmt = '''insert into red_flag_drivers_live_state (dedi_id,slot_id,laps_completed) values (%s,%s,%s) on duplicate key update laps_completed = %s'''
 
-redFlagInfoInsertPrefix = '''insert into red_flag_restart_info (slot_id,driver_name,laps_completed,driver_position) values ('''
+redFlagInfoInsertStmt = '''insert into red_flag_restart_info (slot_id,driver_name,laps_completed,driver_position) values (%s,%s,%s,%s,%s)'''
 
 def run():
     threading.Timer(0.5, run).start()
@@ -26,9 +25,14 @@ def run():
         password=",1@1l46zc@U5",
         database="db6vhiq6rebm7j"
         )
-    host = '192.168.2.102'
-    # host = '192.168.1.107'
-    port = api_port
+    dbCurs = dbh.cursor(buffered=True)
+
+    dedi_query = 'select dedi_id,dedi_ip,dedi_api_port from dedicated_servers where dedi_id = %s'
+    dbCurs.execute(dedi_query,dedi_id)
+    dedi_info = dbCurs.fetchall()
+
+    host = dedi_info[0][1]
+    port = dedi_info[0][2]
     protocol = 'http'
     url_base = protocol + '://' + host + ':' + port + '/rest/'
 
@@ -38,12 +42,7 @@ def run():
     resp = requests.get(standings_endpoint)
     request_time = current_milli_time()
 
-    if resp.status_code != 200:
-        # This means something went wrong.
-        raise ApiError('GET /tasks/ {}'.format(resp.status_code))
     positionList = sorted(resp.json(), key=lambda k: k['position'])
-
-    dbCurs = dbh.cursor(buffered=True)
 
     # pull number of laps for current leader
     leader = positionList[0]
@@ -59,10 +58,10 @@ def run():
 
     # update the live metrics
     for i in positionList:
-        # print(i["slotID"])
-        liveInsertStmt = liveInsertStmtPrefix + str(i['slotID']) + ',' + str(i['lapsCompleted']) + ')' + liveInsertStmtSuffix + str(i['lapsCompleted'])
-        #print(liveInsertStmt)
-        dbCurs.execute(liveInsertStmt)
+        insertParams = (dedi_id,i['slotID'],i['lapsCompleted'],i['lapsCompleted'])
+        # liveInsertStmt = liveInsertStmtPrefix + str(dedi_id) + ',' + str(i['slotID']) + ',' + str(i['lapsCompleted']) + ')' + liveInsertStmtSuffix + str(i['lapsCompleted'])
+        # print(liveInsertStmt)
+        dbCurs.execute(liveInsertStmt,insertParams)
     runtime = datetime.datetime.now() - begin_time
     dbh.commit()
 
@@ -75,9 +74,10 @@ def run():
             # account for the leader having just completed the lap?
             if (i["position"] == 1):
                 i["lapsCompleted"] = i["lapsCompleted"] - 1
-            redFlagInfoInsert = redFlagInfoInsertPrefix + str(i["slotID"]) + ',"' + str(i["driverName"]) + '",' + str(i["lapsCompleted"]) + ',' + str(i["position"]) + ')'
-            print(redFlagInfoInsert)
-            dbCurs.execute(redFlagInfoInsert)
+            redFlagParams = (dedi_id,i["slotID"],i["driverName"],i["lapsCompleted"],i["position"])
+            # redFlagInfoInsert = redFlagInfoInsertPrefix + str(i["slotID"]) + ',"' + str(i["driverName"]) + '",' + str(i["lapsCompleted"]) + ',' + str(i["position"]) + ')'
+            # print(redFlagInfoInsert)
+            dbCurs.execute(redFlagInfoInsertStmt,redFlagParams)
         dbh.commit()
 
 run()
