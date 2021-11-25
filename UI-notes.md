@@ -31,6 +31,7 @@
     - add penalty (type and time)
     - set weight (amount to set it to in kg)
   - show basic metrics
+    - penalties
     - on track or not (use a highlight to indicate?)
     - anything else?? ie laps/position/etc
     - ems errors - ie no 100% throttle
