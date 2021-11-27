@@ -42,7 +42,7 @@ app.post('/clear-penalty', (req, res) => {
     request.post({
         headers: {'content-type' : 'application/x-www-form-urlencoded'},
         url:     'http://' + api_ip + ':' + port + '/rest/chat',
-        body:    '/subpenalty 3 ' + driver_name
+        body:    '/subpenalty 3 ' + encodeURIComponent(driver_name)
       }, function(error, response, body){
         console.log(body);
         res.status(200).send(body);
