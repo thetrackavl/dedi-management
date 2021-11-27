@@ -1,6 +1,8 @@
 const express = require('express');
 const request = require('request');
 
+var api_ip = '192.168.2.102';
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -11,10 +13,10 @@ app.use((req, res, next) => {
 app.get('/session', (req, res) => {
     let port = req.query.port;
     request(
-        { url: 'http://localhost:' + port + '/rest/watch/sessionInfo' },
+        { url: 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo' },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: err });
+                return res.status(500).json({ type: 'error', message: error });
             }
             res.json(JSON.parse(body));
         }
@@ -24,10 +26,10 @@ app.get('/session', (req, res) => {
 app.get('/standings', (req, res) => {
     let port = req.query.port;
     request(
-        { url: 'http://localhost:' + port + '/rest/watch/standings' },
+        { url: 'http://' + api_ip + ':' + port + '/rest/watch/standings' },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: err });
+                return res.status(500).json({ type: 'error', message: error });
             }
             res.json(JSON.parse(body));
         }
