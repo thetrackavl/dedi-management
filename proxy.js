@@ -45,6 +45,7 @@ app.post('/clear-penalty', (req, res) => {
         body:    '/subpenalty 3 ' + driver_name
       }, function(error, response, body){
         console.log(body);
+        res.status(200).send(body);
       });
 });
 
