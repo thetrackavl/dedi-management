@@ -36,5 +36,17 @@ app.get('/standings', (req, res) => {
     )
 });
 
+app.post('/clear-penalty', (req, res) => {
+    let port = req.query.port;
+    let driver_name = req.query.driver;
+    request.post({
+        headers: {'content-type' : 'application/x-www-form-urlencoded'},
+        url:     'http://' + api_ip + ':' + port + '/rest/chat',
+        body:    '/subpenalty 3 ' + driver_name
+      }, function(error, response, body){
+        console.log(body);
+      });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
