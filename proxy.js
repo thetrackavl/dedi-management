@@ -40,9 +40,10 @@ app.post('/clear-penalty', (req, res) => {
     let port = req.query.port;
     let driver_name = req.query.driver;
     request.post({
-        headers: {'content-type' : 'application/x-www-form-urlencoded'},
+        headers: {'content-type' : 'application/x-www-form-urlencoded',
+        'Access-Control-Allow-Origin': 'null'},
         url:     'http://' + api_ip + ':' + port + '/rest/chat',
-        body:    '/subpenalty 3 ' + encodeURIComponent(driver_name)
+        body:    '/subpenalty 3 ' + driver_name
       }, function(error, response, body){
         console.log(body);
         res.status(200).send(body);
