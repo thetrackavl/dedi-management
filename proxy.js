@@ -1,7 +1,9 @@
 const express = require('express');
 const request = require('request');
 
-var api_ip = '192.168.2.102';
+var default_api_ip = '192.168.2.102';
+
+var pod_driver_map = {};
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/session', (req, res) => {
+    let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     request(
         { url: 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo' },
@@ -28,6 +31,7 @@ app.get('/session', (req, res) => {
 });
 
 app.get('/standings', (req, res) => {
+    let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     request(
         { url: 'http://' + api_ip + ':' + port + '/rest/watch/standings' },
@@ -41,6 +45,7 @@ app.get('/standings', (req, res) => {
 });
 
 app.post('/clear-penalty', (req, res) => {
+    let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     let driver_name = req.query.driver;
     request.post({
@@ -53,6 +58,7 @@ app.post('/clear-penalty', (req, res) => {
 });
 
 app.post('/nav', (req, res) => {
+    let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     let nav_action = req.query.action;
     request.post({
@@ -61,6 +67,28 @@ app.post('/nav', (req, res) => {
         console.log(body);
         res.status(200).send(body);
       });
+});
+
+app.post('/driver/map', (req,res) => {
+    let pod_id = req.query.pod_id;
+    let driver = req.query.driver;
+    pod_driver_map[pod_id] = driver;
+    console.log(pod_driver_map);
+    res.status(200).send('');
+});
+
+app.get('/driver/map', (req,res) => {
+    console.log(pod_driver_map);
+    let driver = req.query.driver;
+    let pod_id = 0;
+    console.log(driver);
+    Object.keys(pod_driver_map).forEach((key) => {
+        if (pod_driver_map[key] === driver) {
+            pod_id = key;
+        }
+    })
+    console.log(pod_id);
+    res.status(200).send(pod_id);
 });
 
 const PORT = process.env.PORT || 3000;
