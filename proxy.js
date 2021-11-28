@@ -7,6 +7,10 @@ const app = express();
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
 
@@ -40,11 +44,19 @@ app.post('/clear-penalty', (req, res) => {
     let port = req.query.port;
     let driver_name = req.query.driver;
     request.post({
-        headers: {'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"},
         url:     'http://' + api_ip + ':' + port + '/rest/chat',
         body:    '/subpenalty 3 ' + driver_name
+      }, function(error, response, body){
+        console.log(body);
+        res.status(200).send(body);
+      });
+});
+
+app.post('/nav', (req, res) => {
+    let port = req.query.port;
+    let nav_action = req.query.action;
+    request.post({
+        url:     'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action
       }, function(error, response, body){
         console.log(body);
         res.status(200).send(body);
