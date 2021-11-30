@@ -23,8 +23,10 @@ app.use((req, res, next) => {
 app.get('/session', (req, res) => {
     let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
+    let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo';
+    if (port == 52301) {console.log(api_url);}
     request(
-        { url: 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo' },
+        { url: api_url },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
                 return res.status(500).json({ type: 'error', message: error });
@@ -37,8 +39,10 @@ app.get('/session', (req, res) => {
 app.get('/standings', (req, res) => {
     let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
+    let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/standings';
+    // console.log(api_url);
     request(
-        { url: 'http://' + api_ip + ':' + port + '/rest/watch/standings' },
+        { url: api_url },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
                 return res.status(500).json({ type: 'error', message: error });
@@ -52,8 +56,10 @@ app.post('/clear-penalty', (req, res) => {
     let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     let driver_name = req.query.driver;
+    let api_url = 'http://' + api_ip + ':' + port + '/rest/chat';
+    // console.log(api_url);
     request.post({
-        url:     'http://' + api_ip + ':' + port + '/rest/chat',
+        url:     api_url,
         body:    '/subpenalty 3 ' + driver_name
       }, function(error, response, body){
         console.log(body);
@@ -65,8 +71,10 @@ app.post('/nav/dedi', (req, res) => {
     let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     let nav_action = req.query.action;
+    let api_url = 'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action;
+    console.log(api_url);
     request.post({
-        url:     'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action
+        url:     api_url
       }, function(error, response, body){
         console.log(body);
         res.status(200).send(body);
@@ -81,8 +89,10 @@ app.post('/nav/driver', (req, res) => {
     // find current state as that can impact the action issued
     // plug the current state and the requested action into the map to get the nav action
     let nav_action = driver_nav_action_map[get_driver_state(driver_name)][req_action];
+    let api_url = 'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action;
+    console.log(api_url);
     request.post({
-        url: 'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action
+        url: api_url
       }, function(error, response, body){
         console.log(body);
         res.status(200).send(body);
