@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request');
+const axios = require('axios');
 
 var default_api_ip = '192.168.2.102';
 
@@ -29,16 +30,17 @@ app.get('/session', (req, res) => {
     let api_ip = req.query.ip || default_api_ip;
     let port = req.query.port;
     let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo';
-    if (port == 52301) {console.log(api_url);}
-    request(
-        { url: api_url },
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error });
-            }
-            res.json(JSON.parse(body));
-        }
-    )
+    // console.log(api_url);
+    axios.get(api_url)
+    .then(resp => {
+        // console.log(resp.data);
+        res.json(resp.data);
+    })
+    .catch(err => {
+        // Handle Error Here
+        // console.error(err);
+        return res.status(500).json({ type: 'error', message: err });
+    });
 });
 
 app.get('/standings', (req, res) => {
@@ -46,15 +48,16 @@ app.get('/standings', (req, res) => {
     let port = req.query.port;
     let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/standings';
     // console.log(api_url);
-    request(
-        { url: api_url },
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error });
-            }
-            res.json(JSON.parse(body));
-        }
-    );
+    axios.get(api_url)
+    .then(resp => {
+        // console.log(resp.data);
+        res.json(resp.data);
+    })
+    .catch(err => {
+        // Handle Error Here
+        // console.error(err);
+        return res.status(500).json({ type: 'error', message: err });
+    });
 });
 
 app.post('/clear-penalty', (req, res) => {
@@ -88,13 +91,15 @@ app.post('/nav/dedi', (req, res) => {
 
 app.post('/nav/driver', (req, res) => {
     let driver_name = req.query.driver;
+    let driver_state = req.query.driver_state;
     let req_action = req.query.action;
-    let port = 5397;
-    let api_ip = req.query.ip || pod_ip(pod_id_from_driver(driver_name));
-    // find current state as that can impact the action issued
-    // plug the current state and the requested action into the map to get the nav action
-    let nav_action = driver_nav_action_map[get_driver_state(driver_name).state.navigationState][req_action];
-    let api_url = 'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action;
+    let driver_state_port = 5397;
+    let driver_api_ip = req.query.ip || pod_ip(pod_id_from_driver(driver_name));
+
+    console.log('driver state is ' + driver_state);
+    // console.log(driver_nav_action_map);
+    let nav_action = driver_nav_action_map[driver_state][req_action];
+    let api_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/action/' + nav_action;
     console.log(api_url);
     request.post({
         url: api_url
@@ -102,6 +107,23 @@ app.post('/nav/driver', (req, res) => {
         console.log(body);
         res.status(200).send(body);
       });
+});
+
+app.get('/nav/driver', (req, res) => {
+    let driver_state_port = 5397;
+    let driver_api_ip = req.query.ip || pod_ip(pod_id_from_driver(req.query.driver));
+    let driver_state_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/state';
+    axios.get(driver_state_url)
+    .then(resp => {
+        // console.log(resp.data);
+        console.log('driver state in call is ' + resp.data['state']['navigationState']);
+        res.json(resp.data['state']['navigationState']);
+    })
+    .catch(err => {
+        // Handle Error Here
+        console.error(err);
+        return res.status(500).json({ type: 'error', message: err });
+    });
 });
 
 app.post('/driver/map', (req,res) => {
@@ -118,9 +140,11 @@ app.get('/driver/map', (req,res) => {
 
 function pod_ip(pod_id) {
     var last_octet = 0;
-    var pod_int = length(pod_id) > 2 ? pod_id.substring(3) : pod_id;
+    var pod_int = pod_id.length > 2 ? pod_id.substring(3) : pod_id;
 
-    return '192.168.1.1' +  pod_int.length === 1  ? '0' + pod_int : pod_int;
+    pod_int = pod_int.length == 1  ? '0' + pod_int : pod_int
+    
+    return '192.168.1.1' +  pod_int;
 }
 
 function pod_id_from_driver(driver) {
@@ -131,20 +155,6 @@ function pod_id_from_driver(driver) {
         }
     });
     return pod_id;
-}
-
-function get_driver_state(driver) {
-    let port = 5397;
-    let api_ip = req.query.ip || pod_ip(pod_id_from_driver(driver));
-    request(
-        { url: 'http://' + api_ip + ':' + port + '/navigation/state' },
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error });
-            }
-            res.json(JSON.parse(body));
-        }
-    )
 }
 
 const PORT = process.env.PORT || 3000;
