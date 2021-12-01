@@ -6,7 +6,12 @@ var default_api_ip = '192.168.2.102';
 var pod_driver_map = {};
 
 var driver_nav_action_map = {
-    'state': { 'input_action': 'api_action'}
+    'state': { 'input_action': 'api_action'},
+    'NAV_MAIN_MENU': { 'leave': 'NAV_EXIT' },
+    'NAV_MAIN_MENU': { 'go': 'NAV_RACE_MULTIPLAYER' },
+    'NAV_EVENT': { 'leave': 'NAV_EXIT' },
+    'NAV_EVENT': { 'go': 'NAV_TO_REALTIME' },
+    'NAV_REALTIME': { 'leave': 'NAV_BACK_TO_EVENT' }
 }
 
 const app = express();
@@ -88,7 +93,7 @@ app.post('/nav/driver', (req, res) => {
     let api_ip = req.query.ip || pod_ip(pod_id_from_driver(driver_name));
     // find current state as that can impact the action issued
     // plug the current state and the requested action into the map to get the nav action
-    let nav_action = driver_nav_action_map[get_driver_state(driver_name)][req_action];
+    let nav_action = driver_nav_action_map[get_driver_state(driver_name).state.navigationState][req_action];
     let api_url = 'http://' + api_ip + ':' + port + '/navigation/action/' + nav_action;
     console.log(api_url);
     request.post({
