@@ -8,10 +8,14 @@ var pod_driver_map = {};
 
 var driver_nav_action_map = {
     'state': { 'input_action': 'api_action'},
-    'NAV_MAIN_MENU': { 'leave': 'NAV_EXIT' },
-    'NAV_MAIN_MENU': { 'go': 'NAV_RACE_MULTIPLAYER' },
-    'NAV_EVENT': { 'leave': 'NAV_EXIT' },
-    'NAV_EVENT': { 'go': 'NAV_TO_REALTIME' },
+    'NAV_MAIN_MENU': {
+        'leave': 'NAV_EXIT',
+        'go': 'NAV_RACE_MULTIPLAYER'
+    },
+    'NAV_EVENT': {
+        'leave': 'NAV_EXIT',
+        'go': 'NAV_TO_REALTIME'        
+    },
     'NAV_REALTIME': { 'leave': 'NAV_BACK_TO_EVENT' }
 }
 
@@ -96,8 +100,8 @@ app.post('/nav/driver', (req, res) => {
     let driver_state_port = 5397;
     let driver_api_ip = req.query.ip || pod_ip(pod_id_from_driver(driver_name));
 
-    console.log('driver state is ' + driver_state);
-    // console.log(driver_nav_action_map);
+    console.log(driver_nav_action_map);
+    console.log('trying for ' + driver_state + ' - ' + req_action);
     let nav_action = driver_nav_action_map[driver_state][req_action];
     let api_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/action/' + nav_action;
     console.log(api_url);
@@ -116,12 +120,29 @@ app.get('/nav/driver', (req, res) => {
     axios.get(driver_state_url)
     .then(resp => {
         // console.log(resp.data);
-        console.log('driver state in call is ' + resp.data['state']['navigationState']);
+        // console.log('driver state in call is ' + resp.data['state']['navigationState']);
         res.json(resp.data['state']['navigationState']);
     })
     .catch(err => {
         // Handle Error Here
         console.error(err);
+        return res.status(500).json({ type: 'error', message: err });
+    });
+});
+
+app.get('/nav/pod', (req, res) => {
+    let driver_state_port = 5397;
+    let driver_api_ip = req.query.ip || pod_ip(req.query.podid);
+    let driver_state_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/state';
+    axios.get(driver_state_url)
+    .then(resp => {
+        // console.log(resp.data);
+        // console.log('driver state in call is ' + resp.data['state']['navigationState']);
+        res.json(resp.data['state']['navigationState']);
+    })
+    .catch(err => {
+        // Handle Error Here
+        // console.error(err);
         return res.status(500).json({ type: 'error', message: err });
     });
 });
