@@ -1,0 +1,31 @@
+{
+    "loadingStatus": {
+        "track": {
+            "length": "3.477 KM / 2.173 Miles",
+            "type": "Permanent Road Circuit",
+            "track": "CadwellParkSRW",
+            "sig": "160a7618e0cb2374a1e0938557998f6402cc77ab3af2cf177242b12911972f0c",
+            "localizationRaw": {},
+            "categoryLocalizationRaw": {},
+            "trackmap": [],
+            "venue": "CadwellParkSRW 1.55",
+            "sceneDesc": "CADWELLPARKSRW"
+        },
+        "loading": false,
+        "percentage": -1
+    },
+    "state": {
+        "settingMode": "SETTING_MULTIPLAYER",
+        "user": {
+            "admin": false,
+            "userState": "DEFAULT"
+        },
+        "gamePhase": "GREEN",
+        "gameSession": "PRACTICE1",
+        "gameState": "GSTATE_DYN",
+        "appBuild": 1125,
+        "steamBetaBranchName": "default",
+        "navigationState": "NAV_EVENT",
+        "internalStateCode": "OP_RAN_REALTIME_PASS"
+    }
+}

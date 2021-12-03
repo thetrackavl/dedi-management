@@ -35,7 +35,7 @@ app.get('/session', (req, res) => {
     let port = req.query.port;
     let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/sessionInfo';
     // console.log(api_url);
-    axios.get(api_url)
+    axios.get(api_url, {timeout: 300})
     .then(resp => {
         // console.log(resp.data);
         res.json(resp.data);
@@ -43,7 +43,7 @@ app.get('/session', (req, res) => {
     .catch(err => {
         // Handle Error Here
         // console.error(err);
-        return res.status(500).json({ type: 'error', message: err });
+        return res.status(408).json({ type: 'error', message: err });
     });
 });
 
@@ -52,7 +52,7 @@ app.get('/standings', (req, res) => {
     let port = req.query.port;
     let api_url = 'http://' + api_ip + ':' + port + '/rest/watch/standings';
     // console.log(api_url);
-    axios.get(api_url)
+    axios.get(api_url, {timeout: 300})
     .then(resp => {
         // console.log(resp.data);
         res.json(resp.data);
@@ -60,7 +60,7 @@ app.get('/standings', (req, res) => {
     .catch(err => {
         // Handle Error Here
         // console.error(err);
-        return res.status(500).json({ type: 'error', message: err });
+        return res.status(408).json({ type: 'error', message: err });
     });
 });
 
@@ -117,7 +117,7 @@ app.get('/nav/driver', (req, res) => {
     let driver_state_port = 5397;
     let driver_api_ip = req.query.ip || pod_ip(pod_id_from_driver(req.query.driver));
     let driver_state_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/state';
-    axios.get(driver_state_url)
+    axios.get(driver_state_url, {timeout: 300})
     .then(resp => {
         // console.log(resp.data);
         // console.log('driver state in call is ' + resp.data['state']['navigationState']);
@@ -126,7 +126,7 @@ app.get('/nav/driver', (req, res) => {
     .catch(err => {
         // Handle Error Here
         console.error(err);
-        return res.status(500).json({ type: 'error', message: err });
+        return res.status(408).json({ type: 'error', message: err });
     });
 });
 
@@ -134,7 +134,7 @@ app.get('/nav/pod', (req, res) => {
     let driver_state_port = 5397;
     let driver_api_ip = req.query.ip || pod_ip(req.query.podid);
     let driver_state_url = 'http://' + driver_api_ip + ':' + driver_state_port + '/navigation/state';
-    axios.get(driver_state_url)
+    axios.get(driver_state_url, {timeout: 300})
     .then(resp => {
         // console.log(resp.data);
         // console.log('driver state in call is ' + resp.data['state']['navigationState']);
@@ -143,7 +143,24 @@ app.get('/nav/pod', (req, res) => {
     .catch(err => {
         // Handle Error Here
         // console.error(err);
-        return res.status(500).json({ type: 'error', message: err });
+        return res.status(408).json({ type: 'error', message: err });
+    });
+});
+
+app.get('/race/selection', (req, res) => {
+    let race_selection_port = 5397;
+    let driver_api_ip = req.query.ip || pod_ip(req.query.podid);
+    let race_selection_url = 'http://' + driver_api_ip + ':' + race_selection_port + '/rest/race/selection';
+    axios.get(race_selection_url, {timeout: 300})
+    .then(resp => {
+        // console.log(resp.data);
+        // console.log('driver state in call is ' + resp.data['state']['navigationState']);
+        res.json(resp.data);
+    })
+    .catch(err => {
+        // Handle Error Here
+        // console.error(err);
+        return res.status(408).json({ type: 'error', message: err });
     });
 });
 
@@ -164,7 +181,7 @@ function pod_ip(pod_id) {
     var pod_int = pod_id.length > 2 ? pod_id.substring(3) : pod_id;
 
     pod_int = pod_int.length == 1  ? '0' + pod_int : pod_int
-    
+
     return '192.168.1.1' +  pod_int;
 }
 
@@ -179,4 +196,5 @@ function pod_id_from_driver(driver) {
 }
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+var srv = app.listen(PORT, () => console.log(`listening on ${PORT}`));
+srv.setTimeout(500);

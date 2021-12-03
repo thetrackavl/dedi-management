@@ -82,7 +82,24 @@
     - save button mapping presets and change via api possible?
 
 
+## pod list
+- info to communicate
+  - running or not                  x
+  - at drive selection or not       x
+  - connected to dedi or not        x
+  - what dedi they're connected to  x
+  - car                             x
+  - track                           x
+- on click
+  - highlight for selection
+  - highlight in dedi as well
+  - if state is correct - button to pick car/livery
+    - present list of cars
+    - present list of liveries
+    - apply selected car/livery
+
 to do
-- map out driver nav
 - test save button mapping presets and change via api possible?
 - test if we can change a dedi setting in player.json, then restart weekend to take effect (ie practice start time)
+- add laps completed of total to race session on dedi card (ie 7 of 10)
+- 

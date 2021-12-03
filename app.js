@@ -1,5 +1,8 @@
-var proxy_ip = '192.168.1.17';
+var proxy_ip = 'localhost';
 var proxy_port = '3000';
+
+var proxy_prefix = 'http://' + proxy_ip + ':' + proxy_port;
+
 
 Vue.createApp({
     mounted: function(){
@@ -7,74 +10,71 @@ Vue.createApp({
         // localStorage.setItem('theme', targetTheme);
 
         this.interval = setInterval(() => this.updateDediInfo(), 1000);
+        this.interval = setInterval(() => this.updatePodInfo(), 2000);
     },
     data(){
         return {
             header: "Dedi it Up!",
             timer: 0,
+            pods:[
+                {podId: 1,podIp: '192.168.1.101'},
+                {podId: 2,podIp: '192.168.1.102'},
+                {podId: 3,podIp: '192.168.1.103'},
+                {podId: 4,podIp: '192.168.1.104'},
+                {podId: 5,podIp: '192.168.1.105'},
+                {podId: 6,podIp: '192.168.1.106'},
+                {podId: 7,podIp: '192.168.1.107'},
+                {podId: 8,podIp: '192.168.1.108'},
+                {podId: 9,podIp: '192.168.1.109'},
+                {podId: 10,podIp: '192.168.1.110'},
+                {podId: 11,podIp: '192.168.1.111'},
+                {podId: 12,podIp: '192.168.1.112'}
+            ],
             dedis:[
-                {dediId: '0',serverName:'Sched A1',dediPort:'31298'},
-                {dediId: '1',serverName:'Sched A2',dediPort:'32298'},
-                {dediId: '2',serverName:'Sched B1',dediPort:'33298'},
-                {dediId: '3',serverName:'Sched B2',dediPort:'34298'},
-                {dediId: '4',serverName:'Sched C1',dediPort:'35298'},
-                {dediId: '5',serverName:'Sched C2',dediPort:'36298'},
-                {dediId: '6',serverName:'Custom 1',dediPort:'51298'},
-                {dediId: '7',serverName:'Drop-In',dediPort:'51301'},
-                {dediId: '8',serverName:'Custom 2',dediPort:'52298'},
-                {dediId: '9',serverName:'Rookie League',dediPort:'52301'},
-                {dediId: '10',serverName:'Custom 3',dediPort:'53298'},
-                {dediId: '11',serverName:'Pro League 2',dediPort:'53301'},
-                {dediId: '12',serverName:'Custom 4',dediPort:'54298'},
-                {dediId: '13',serverName:'Pro League 1',dediPort:'54301'},
-                {dediId: '14',serverName:'Enduro',dediPort:'54351'}
-                // {dediId:'1',serverUp:'0',apiFail:'0',dediPort:'51298',serverName: 'Custom 1',modName: 'Petit Petit',serverSession: 'Practice',serverSessionTimeLeft: '2:33:27',serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'2',serverUp:'0',apiFail:'0',dediPort:'52298', serverName: 'Custom 2', modName: 'Kansas - Xfinitys', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'3',serverUp:'0',apiFail:'0',dediPort:'53298', serverName: 'Custom 3', modName: 'Bridge - 73 RSR', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'4',serverUp:'0',apiFail:'0',dediPort:'54298', serverName: 'Custom 4', modName: 'Imola - 134 Judd', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'5',serverUp:'0',apiFail:'0',dediPort:'54351', serverName: 'Enduro', modName: 'Petit Petit', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'6',serverUp:'0',apiFail:'0',dediPort:'51301', serverName: 'Drop-In', modName: 'Suzuka - F3', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'7',serverUp:'0',apiFail:'0',dediPort:'31298', serverName: 'Sched A1', modName: 'Watkins - Fiat 128', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'8',serverUp:'0',apiFail:'0',dediPort:'32298', serverName: 'Sched A2', modName: 'Watkins - USF-17', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'9',serverUp:'0',apiFail:'0',dediPort:'33298', serverName: 'Sched B1', modName: 'Lime Rock - Fiat 128', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'10',serverUp:'0',apiFail:'0',dediPort:'34298', serverName: 'Sched B2', modName: 'Lime Rock - USF-17', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'11',serverUp:'0',apiFail:'0',dediPort:'35298', serverName: 'Sched C1', modName: '---', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'12',serverUp:'0',apiFail:'0',dediPort:'36298', serverName: 'Sched C2', modName: '---', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'13',serverUp:'0',apiFail:'0',dediPort:'53301', serverName: 'Mixed League', modName: 'Road America', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'14',serverUp:'0',apiFail:'0',dediPort:'54301', serverName: 'LMP3 League', modName: 'Snetterton', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]},
-                // {dediId:'15',serverUp:'0',apiFail:'0',dediPort:'52301', serverName: 'Rookie League', modName: 'Portland - Alpine', serverSession: 'Practice', serverSessionTimeLeft: '2:33:27', serverNumberDrivers: '5',
-                //     drivers:[]}
+                {dediId: '0',serverName:'SchedA1',dediPort:'31298',apiFail:0,countdown:15},
+                {dediId: '1',serverName:'SchedA2',dediPort:'32298',apiFail:0,countdown:15},
+                {dediId: '2',serverName:'SchedB1',dediPort:'33298',apiFail:0,countdown:15},
+                {dediId: '3',serverName:'SchedB2',dediPort:'34298',apiFail:0,countdown:15},
+                {dediId: '4',serverName:'SchedC1',dediPort:'35298',apiFail:0,countdown:15},
+                {dediId: '5',serverName:'SchedC2',dediPort:'36298',apiFail:0,countdown:15},
+                {dediId: '6',serverName:'Custom1',dediPort:'51298',apiFail:0,countdown:15},
+                {dediId: '7',serverName:'Drop-In',dediPort:'51301',apiFail:0,countdown:15},
+                {dediId: '8',serverName:'Custom2',dediPort:'52298',apiFail:0,countdown:15},
+                {dediId: '9',serverName:'RookieLeague',dediPort:'52301',apiFail:0,countdown:15},
+                {dediId: '10',serverName:'Custom3',dediPort:'53298',apiFail:0,countdown:15},
+                {dediId: '11',serverName:'ProLeague2',dediPort:'53301',apiFail:0,countdown:15},
+                {dediId: '12',serverName:'Custom4',dediPort:'54298',apiFail:0,countdown:15},
+                {dediId: '13',serverName:'ProLeague1',dediPort:'54301',apiFail:0,countdown:15},
+                {dediId: '14',serverName:'Enduro',dediPort:'54351',apiFail:0,countdown:15}
             ]
         }
     },
     methods:{
         updateDediInfo: function(){
             this.dedis.forEach(function(dedi,index,dedis) {
-                // console.log(dedis[index]);
-                var dedi_port = dedi.dediPort;
-                var url = 'http://' + proxy_ip + ':' + proxy_port + '/session/?port=' + dedi_port;
-                axios.get(url,{timeout: 500})
+                // console.log('dedi iteration - ' + dedi.dediId);
+                try {
+                    if (dedi.apiFail > 15) {
+                        dedis[index].serverUp = '-1';
+                        if (dedi.countdown > 0) {
+                            dedis[index].countdown = parseInt(dedis[index].countdown) - 1;
+                            return;
+                        } else {
+                            dedis[index].apiFail = 14;
+                        }
+                    }
+                    // console.log(dedis[index]);
+                    var dedi_port = dedi.dediPort;
+                    var url = proxy_prefix + '/session/?port=' + dedi_port;
+                    // console.log(url);
+                    axios.get(url,{timeout: 500})
                     .then(function (response) {
                         // handle success - reset our failure counter
                         dedis[index].apiFail = 0;
                         // console.log(response);
                         rawData = response.data;
                         // console.log(rawData);
-                        // console.log(dedis[index]);
+                        // console.log(index);
                         dedis[index].serverName = rawData.playerFileName;
                         dedis[index].serverSession = rawData.session;
                         dedis[index].serverSessionTimeLeft = new Date((rawData.endEventTime - rawData.currentEventTime) * 1000).toISOString().substr(11, 8);
@@ -83,8 +83,8 @@ Vue.createApp({
                         dedis[index].modName = rawData.serverName;
                         // console.log(dedis[index]);
                         //now grab driver info
-                        var driver_url = 'http://' + proxy_ip + ':' + proxy_port + '/standings/?port=' + dedi_port;
-                        axios.get(driver_url,{timeout: 500})
+                        var driver_url = proxy_prefix + '/standings/?port=' + dedi_port;
+                        axios.get(driver_url,{timeout: 1500})
                             .then(function (response) {
                                 driver_data = response.data;
                                 drivers = [];
@@ -103,20 +103,88 @@ Vue.createApp({
                     })
                     .catch(function (error) {
                         // handle error - build in a debounce for the odd failure
-                        dedis[index].apiFail = dedis[index].apiFail + 1;
-                        if (dedis[index].apiFail > 5) {
-                            dedis[index].serverUp = '-1';
+                        dedis[index].apiFail = parseInt(dedis[index].apiFail) + 1;
+                        if (dedis[index].apiFail > 15) {
+                            dedis[index].countdown = 15;
                         }
                         // console.log(error);
                     })
+                } catch {
+                    dedis[index].apiFail = parseInt(dedis[index].apiFail) + 1;
+                    if (dedis[index].apiFail > 15) {
+                        dedis[index].countdown = 15;
+                    }
+                }
             });
+        },
+        updatePodInfo: function() {
+            let dedi_arr = this.dedis;
+            this.pods.forEach(function(pod,index,pods) {
+                console.log('pod iteration - ' + pod.podId);
+                try {
+                    // populate nav state
+                    let nav_url = proxy_prefix + '/nav/pod/?podid=' + pod.podId;
+                    axios.get(nav_url,{timeout: 500})
+                    .then(function (response) {
+                        let nav_data = response.data;
+                        pods[index].podNavState = nav_data;
+                    }).catch(function(error) {
+                        pods[index].podNavState = 'none';
+                    });
+                    // populate dedi connection
+                    // update dedi-map
+                    let session_url = proxy_prefix + '/session/?ip=' + pod.podIp + '&port=5397';
+                    axios.get(session_url,{timeout: 1500})
+                    .then(function (response) {
+                        let session_data = response.data;
+                        // console.log(dedi_arr)
+                        let connected_dedi = dedi_arr.find(o => o.modName === session_data.serverName);
+                        // console.log(connected_dedi);
+                        // console.log(+ " ---- " + pod.podId);
+                        pods[index].modName = connected_dedi.modName;
+                        pods[index].serverName = connected_dedi.serverName;
+                        pods[index].podDriver = session_data.playerName;
+                        if (session_data.playerName === '') {
+                            pods[index].podDriver = 'loading';
+                        }
+                    }).catch(function (error) {
+                        //catch the error here
+                        pods[index].modName = 'none';
+                        pods[index].serverName = 'none';
+                        pods[index].podDriver = 'none';
+                        pods[index].podDriver = 'none';
+                    });
+                    let race_selection_url = proxy_prefix + '/race/selection/?podid=' + pod.podId;
+                    axios.get(race_selection_url,{timeout: 1500})
+                    .then(function (response) {
+                        let race_selection_data = response.data;
+                        // console.log(race_selection_data);
+                        pods[index].trackName = race_selection_data['track']['shortName'] + ' - ' + race_selection_data['track']['name'];
+                        pods[index].carName = race_selection_data['car']['name'];
+                    }).catch(function (error) {
+                        //catch the error here
+                        pods[index].trackName = 'none';
+                        pods[index].carName = 'none';
+                    })
+                } catch {
+                    pods[index].podDriver = 'error';
+                    pods[index].podNavState = 'error';
+                    pods[index].modName = 'error';
+                    pods[index].serverName = 'error';
+                    pods[index].trackName = 'error';
+                    pods[index].carName = 'error';
+                }
+            })
         }
     },
     computed: {
         orderedServers: function () {
         return _.orderBy(this.dedis, 'serverUp','desc')
+        },
+        orderedDrivers: function(drivers) {
+            return _.orderBy(drivers,'driverPosition')
         }
-      }
+    }
 })
 .component('dedi-card',{
     template: '#dedi-card-template',
@@ -128,7 +196,8 @@ Vue.createApp({
         'server_number_drivers',
         'server_up',
         'drivers',
-        'dedi_port'
+        'dedi_port',
+        'pods'
     ],
     data(){
         return {
@@ -145,11 +214,17 @@ Vue.createApp({
         'server_number_drivers',
         'server_up',
         'drivers',
-        'dedi_port'
+        'dedi_port',
+        'pods'
     ],
     data(){
         return {
             selected_drivers: []
+        }
+    },
+    computed: {
+        orderedDrivers: function() {
+            return _.orderBy(this.drivers,'driverPosition')
         }
     }
 })
@@ -189,8 +264,8 @@ Vue.createApp({
         'nav_action'
     ],
     methods: {
-        sendNav: function(dedi_port,nav_action) {
-            var url = 'http://' + proxy_ip + ':' + proxy_port + '/nav/dedi/?port=' + dedi_port + '&action=' + nav_action;
+        sendDediNav: function(dedi_port,nav_action) {
+            var url = proxy_prefix + '/nav/dedi/?port=' + dedi_port + '&action=' + nav_action;
             console.log(url);
             axios.post(url,{timeout: 500})
             .then(function (response) {
@@ -211,8 +286,9 @@ Vue.createApp({
     ],
     methods: {
         clearPenalty: function(selected_drivers,dedi_port) {
+            // console.log(selected_driver);
             selected_drivers.forEach( function(driver,index,selected_drivers) {
-                var url = 'http://' + proxy_ip + ':' + proxy_port + '/clear-penalty/?port=' + dedi_port + '&driver=' + encodeURIComponent(driver.id);
+                var url = proxy_prefix + '/clear-penalty/?port=' + dedi_port + '&driver=' + encodeURIComponent(driver.id);
                 console.log(url);
                 axios.post(url,{timeout: 500})
                 .then(function (response) {
@@ -226,15 +302,19 @@ Vue.createApp({
         }
     }
 })
-.component('driver-leave-button',{
-    template: '#driver-leave-button-template',
+.component('driver-nav-button',{
+    template: '#driver-nav-button-template',
     props: [
-        'selected_drivers'
+        'selected_drivers',
+        'nav_action',
+        'pods'
     ],
     methods: {
-        driverLeave: function(selected_drivers) {
+        sendDriverNav: function(pods,selected_drivers,nav_action) {
             selected_drivers.forEach( function(driver,index,selected_drivers) {
-                var url = 'http://' + proxy_ip + ':' + proxy_port + '/nav/driver/?driver=' + encodeURIComponent(driver.id) + '&action=leave';
+                let driver_pod = pods.find(o => o.podDriver === driver.id);
+                console.log(driver_pod);
+                var url = proxy_prefix + '/nav/driver/?ip=' + driver_pod.podIp + '&action=' + nav_action + '&driver_state=' + driver_pod.podNavState;
                 console.log(url);
                 axios.post(url,{timeout: 500})
                 .then(function (response) {
@@ -248,15 +328,16 @@ Vue.createApp({
         }
     }
 })
-.component('driver-go-button',{
-    template: '#driver-go-button-template',
+.component('driver-ai-button',{
+    template: '#driver-ai-button-template',
     props: [
-        'selected_drivers'
+        'selected_drivers',
+        'ai_state'
     ],
     methods: {
-        driverLeave: function(selected_drivers) {
+        driverLeave: function(selected_drivers,ai_state) {
             selected_drivers.forEach( function(driver,index,selected_drivers) {
-                var url = 'http://' + proxy_ip + ':' + proxy_port + '/nav/driver/?driver=' + encodeURIComponent(driver.id) + '&action=go';
+                // var url = proxy_prefix + '/nav/driver/?driver=' + encodeURIComponent(driver.id) + '&action=go';
                 console.log(url);
                 axios.post(url,{timeout: 500})
                 .then(function (response) {
@@ -270,25 +351,29 @@ Vue.createApp({
         }
     }
 })
-.component('driver-ai-on-button',{
-    template: '#driver-ai-on-button-template',
+.component('pod-list',{
+    template: '#pod-list-template',
     props: [
-        'selected_drivers'
+        'pod_id',
+        'driver_name',
+
     ],
     methods: {
-        driverLeave: function(selected_drivers) {
-            selected_drivers.forEach( function(driver,index,selected_drivers) {
-                var url = 'http://' + proxy_ip + ':' + proxy_port + '/nav/driver/?driver=' + encodeURIComponent(driver.id) + '&action=go';
-                console.log(url);
-                axios.post(url,{timeout: 500})
-                .then(function (response) {
-                    console.log()
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
+        populateCars: function(pod_id) {
+            let cars_url = proxy_prefix + '/race/car';
+            axios.get(cars_url,{timeout: 1500})
+            .then(function (response) {
+                let car_list = response.data;
+                car_list.forEach(function(car,index,cars) {
+                    this.cars[car['fullPathTree']][car['name']] = car['id'];
                 })
             })
+        }
+    },
+    data() {
+        return {
+            cars: {},
+            liveries: []
         }
     }
 })

@@ -1,0 +1,20 @@
+{
+    "loadingStatus": {
+      "loading": false,
+      "percentage": -1
+    },
+    "state": {
+      "settingMode": "SETTING_MULTIPLAYER",
+      "user": {
+        "admin": false,
+        "userState": "DEFAULT"
+      },
+      "gamePhase": "BEFORE",
+      "appBuild": 1125,
+      "gameSession": "PRACTICE1",
+      "gameState": "GSTATE_SETUP",
+      "navigationState": "NAV_MAIN_MENU",
+      "internalStateCode": "OP_RAN_REALTIME_PASS",
+      "steamBetaBranchName": "default"
+    }
+  }
