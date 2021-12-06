@@ -13,6 +13,10 @@
                 <h4 class="text-uppercase">Dedicated Server Management</h4>
                 <p>Server Summary.</p>
               </div>
+              <pod-list
+                v-for="track in distinctTracks"
+                :track_name=track
+                :pods=pods></pod-list>
             </div>
             <div class="row" id="server-list">
                 <dedi-card
@@ -155,6 +159,21 @@
 
         <script type="text/x-template" id="driver-nav-button-template">
             <button type="button" class="btn" @click="sendDriverNav(pods,selected_drivers,nav_action)"><slot></slot></button>
+        </script>
+
+
+
+        <script type="text/x-template" id="pod-list-template">
+            <h4>{{track_name}}</h4>
+            <select
+                size='12'
+                multiple v-model=track_name>
+                <option
+                    v-for="pod in podsByTrack(track_name)"
+                    :value="{id: pod.podId}">
+                    {{pod.podId}} - {{pod.carNameModel}} - {{pod.carNameDetail}}
+                </option>
+            </select>
         </script>
 
         <script src="https://unpkg.com/vue@3"></script>

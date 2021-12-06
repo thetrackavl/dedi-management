@@ -41,7 +41,7 @@
   - restart weekend
   - restart session
   - next session
-  - nice to have
+  - nice to have - turns out these are easy =)
     - ems put on track
     - ems leave/exit
     - ems enable ai
@@ -56,6 +56,8 @@
   - chat endpoint
   - driver name in body
 - put on track/leave-exit
+  - check if session is race
+    - if race, pop confirmation modal before removing anyone
   - iterate driver names
   - map to pod id
   - map to ip address
@@ -67,22 +69,17 @@
   - map to pod id
   - map to ip
   - send command
-- livery
-  - single driver in the correct state (the drive/spectate/exit in UI)
-    - option to go to car/livery selection
-    - presentation of cars/livery
-    - selection of car/livery and progress to next state
-  - multiple drivers selected
-    - button to select car and auto-select livery based on pod id
-    - so, select drivers 1,2,5 and car 1 and they'll get different liveries of that (if available)
-    - the select 3,4 and car 2 and they'll get that car
-  - options
-    - initially just presets
-    - select drivers and apply changes to button mappings, assists, etc
-    - save button mapping presets and change via api possible?
+- controls
+  - list all presets (should be the same for every pod)
+  - select a preset
+  - provide warning/confirmation if new preset is different wheel/etc from current preset (nice to have)
+- options
+  - select drivers and apply changes to individual button mappings, assists, etc
+  - searchable select of options - then set value - then apply to all selected drivers
 
 
 ## pod list
+- only list pods not in dedis
 - info to communicate
   - running or not                  x
   - at drive selection or not       x
@@ -92,11 +89,34 @@
   - track                           x
 - on click
   - highlight for selection
-  - highlight in dedi as well
-  - if state is correct - button to pick car/livery
-    - present list of cars
-    - present list of liveries
-    - apply selected car/livery
+  - if state is correct - button to pick car/livery (should be the only reason they're in the list)
+    - single pod pod selected
+      - present list of cars
+      - present list of liveries
+      - apply selected car/livery
+      - return to list
+    - multiple drivers selected
+      - button to select car
+      - livery is auto-selected based on pod id
+        - so, select drivers 1,2,5 and car 1 and they'll get different liveries of that (if available)
+        - then select 3,4 and car 2 and they'll get that car
+      - return to list
+
+## pod list more
+- track name or mod name
+- list of pods
+  - pod id
+  - driver name
+  - car model
+  - car number
+- button to select auto livery
+- button to get list of cars
+  - select car and aut livery
+  - select car and list of liveries
+- button join server
+
+
+
 
 to do
 - test save button mapping presets and change via api possible?

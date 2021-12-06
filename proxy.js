@@ -8,13 +8,17 @@ var pod_driver_map = {};
 
 var driver_nav_action_map = {
     'state': { 'input_action': 'api_action'},
+    'SELECTION': {
+        'leave': 'NAV_EXIT',
+        'go': 'NAV_RACE_MULTIPLAYER'
+    },
     'NAV_MAIN_MENU': {
         'leave': 'NAV_EXIT',
         'go': 'NAV_RACE_MULTIPLAYER'
     },
     'NAV_EVENT': {
         'leave': 'NAV_EXIT',
-        'go': 'NAV_TO_REALTIME'        
+        'go': 'NAV_TO_REALTIME'
     },
     'NAV_REALTIME': { 'leave': 'NAV_BACK_TO_EVENT' }
 }
