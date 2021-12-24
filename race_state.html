@@ -1,186 +1,308 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    </head>
-    <body>
-        <section id="minimal-statistics">
-            <div class="row">
-              <div class="col-12 mt-3 mb-1">
-                <h4 class="text-uppercase">Dedicated Server Management</h4>
-                <p>Server Summary.</p>
-              </div>
-              <pod-list
-                v-for="track in distinctTracks"
-                :track_name=track
-                :pods=pods></pod-list>
-            </div>
-            <div class="row" id="server-list">
-                <dedi-card
-                    v-for="dedi in orderedServers"
-                    :key="dedi.dediId"
-                    :server_name="dedi.serverName"
-                    :mod_name="dedi.modName"
-                    :server_session="dedi.serverSession"
-                    :server_session_time_left="dedi.serverSessionTimeLeft"
-                    :server_number_drivers="dedi.serverNumberDrivers"
-                    :drivers="dedi.drivers"
-                    :dedi_port="dedi.dediPort"
-                    :server_up="dedi.serverUp"
-                    :pods="pods"></dedi-card>
-            </div>
-        </section>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title></title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+			crossorigin="anonymous"
+		/>
+		<!-- JavaScript Bundle with Popper -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+			crossorigin="anonymous"
+		></script>
+		<link href="nav.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="row h-100">
+			<!-- <div class="col-md-3">
+				<div
+					class="
+						d-flex
+						flex-column flex-shrink-0
+						p-3
+						text-white
+						bg-dark
+					"
+					style="width: 280px"
+				>
+					<a
+						href="/"
+						class="
+							d-flex
+							align-items-center
+							mb-3 mb-md-0
+							me-md-auto
+							text-white text-decoration-none
+						"
+					>
+						<svg class="bi me-2" width="40" height="32">
+							<use xlink:href="#bootstrap" />
+						</svg>
+						<span class="fs-4">Sidebar</span>
+					</a>
+					<hr />
+					<ul class="nav nav-pills flex-column mb-auto">
+						<li class="nav-item">
+							<a
+								href="#"
+								class="nav-link active"
+								aria-current="page"
+							>
+								<svg class="bi me-2" width="16" height="16">
+									<use xlink:href="#home" />
+								</svg>
+								Home
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link text-white">
+								<svg class="bi me-2" width="16" height="16">
+									<use xlink:href="#speedometer2" />
+								</svg>
+								Dashboard
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link text-white">
+								<svg class="bi me-2" width="16" height="16">
+									<use xlink:href="#table" />
+								</svg>
+								Orders
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link text-white">
+								<svg class="bi me-2" width="16" height="16">
+									<use xlink:href="#grid" />
+								</svg>
+								Products
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link text-white">
+								<svg class="bi me-2" width="16" height="16">
+									<use xlink:href="#people-circle" />
+								</svg>
+								Customers
+							</a>
+						</li>
+					</ul>
+					<hr />
+					<div class="dropdown">
+						<a
+							href="#"
+							class="
+								d-flex
+								align-items-center
+								text-white text-decoration-none
+								dropdown-toggle
+							"
+							id="dropdownUser1"
+							data-bs-toggle="dropdown"
+							aria-expanded="false"
+						>
+							<img
+								src="https://github.com/mdo.png"
+								alt=""
+								width="32"
+								height="32"
+								class="rounded-circle me-2"
+							/>
+							<strong>mdo</strong>
+						</a>
+						<ul
+							class="
+								dropdown-menu dropdown-menu-dark
+								text-small
+								shadow
+							"
+							aria-labelledby="dropdownUser1"
+						>
+							<li>
+								<a class="dropdown-item" href="#"
+									>New project...</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Settings</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Profile</a>
+							</li>
+							<li><hr class="dropdown-divider" /></li>
+							<li>
+								<a class="dropdown-item" href="#">Sign out</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div> -->
+			<div class="col-md-9">
+				<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+					<!-- <div class="container-md border" id="page"> -->
+					<div class="row">
+						<div class="col-6 mt-3 mb-1" id="title-info">
+							<h4 class="text-uppercase">
+								Dedicated Server Management
+							</h4>
+							<p>Server Summary.</p>
+						</div>
+					</div>
+					<div class="row" id="server-list">
+						<pod-list
+							v-for="mod in distinctMods()"
+							:mod_name="mod"
+							:pods="podsByMod(mod)"
+						></pod-list>
+						<dedi-card
+							v-for="dedi in orderedServers"
+							:key="dedi.dediId"
+							:server_name="dedi.serverName"
+							:mod_name="dedi.modName"
+							:server_session="dedi.serverSession"
+							:server_session_time_left="dedi.serverSessionTimeLeft"
+							:server_number_drivers="dedi.serverNumberDrivers"
+							:drivers="dedi.drivers"
+							:dedi_port="dedi.dediPort"
+							:server_up="dedi.serverUp"
+							:pods="pods"
+						></dedi-card>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<script type="text/x-template" id="dedi-card-template">
+			<dedi-online
+			    v-if="server_up >= 0"
+			    :server_name="server_name"
+			    :mod_name="mod_name"
+			    :server_session="server_session"
+			    :server_session_time_left="server_session_time_left"
+			    :server_number_drivers="server_number_drivers"
+			    :drivers="drivers"
+			    :dedi_port="dedi_port"
+			    :pods="pods"
+			></dedi-online>
+			<dedi-offline
+			    v-else
+			    :server_name="server_name"
+			></dedi-offline>
+		</script>
 
-        <script type="text/x-template" id="dedi-card-template">
-            <dedi-online
-                v-if="server_up >= 0"
-                :server_name="server_name"
-                :mod_name="mod_name"
-                :server_session="server_session"
-                :server_session_time_left="server_session_time_left"
-                :server_number_drivers="server_number_drivers"
-                :drivers="drivers"
-                :dedi_port="dedi_port"
-                :pods="pods"
-            ></dedi-online>
-            <dedi-offline
-                v-else
-                :server_name="server_name"
-            ></dedi-offline>
+		<script type="text/x-template" id="dedi-online-template">
+			<div class="col-xl-4 col-sm-6 col-12">
+			    <div class="card">
+			      <div class="card-content">
+			        <div class="card-body">
+			          <div class="media d-flex">
+						<div class="media-body text-left">
+							<h5>{{server_name}}</h5>
+							<span>{{mod_name}}</span>
+							<span>
+								<button type="button" class="btn btn-outline-warning" @click="sendDediNav(dedi_port,'NAV_RESTART_WEEKEND')">Restart Wknd</button>
+							</span>
+						</div>
+			            <div class="media-body text-center">
+							<h5>{{server_session}}</h5>
+							<span>{{server_session_time_left}} left</span>
+							<span>
+								<button type="button" class="btn btn-outline-secondary" @click="sendDediNav(dedi_port,'NAV_RESTART_RACE')">Restart Race</button>
+							</span>
+						</div>
+						<div class="media-body text-right">
+							<h5>{{server_number_drivers}} Drivers</h5>
+								<button type="button" class="btn btn-outline-success" @click="sendDediNav(dedi_port,'NAV_FINISH_SESSION')">Next Sess</button>
+								<button type="button" class="btn btn-outline-danger" @click="sendDediNav(dedi_port,'NAV_RESTART_RACE')">Red Flag</button>
+						</div>
+			          </div>
+			        </div>
+			        <div class="media d-flex">
+			            <div class="media-body text-left">
+			                <select size='12' multiple v-model="selected_drivers">
+			                    <option
+			                        v-for="driver in orderedDrivers"
+			                        :value="{id: driver.driverName}"
+			                        :style="{ background: driver.driverOnTrack ? 'white' : 'grey', color: driver.driverPenalty ? 'red' : 'black' }">
+			                        {{driver.driverName}} - {{driver.driverLaps}} laps{{driver.driverPenalty ? ' - penalty' : ''}} - {{driver.driverOnTrack ? 'on track' : 'in garage'}}
+			                    </option>
+			                </select>
+			            </div>
+			            <div class="media-body text-right">
+							<span><button type="button" class="btn btn-outline-success" @click="clearPenalty(selected_drivers,dedi_port)">Clear Penalty</button></span>
+							<span><button type="button" class="btn btn-outline-danger" @click="sendDriverNav(pods,selected_drivers,'leave')">Driver Leave</button></span>
+			                <span><button type="button" class="btn btn-outline-primary" @click="sendDriverNav(pods,selected_drivers,'go')">Driver Go</button></span>
+			            </div>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+		</script>
 
-        </script>
+		<script type="text/x-template" id="dedi-offline-template">
+			<div class="col-xl-3 col-sm-6 col-12">
+			    <div class="card" style="background-color:#A8B0B3">
+			      <div class="card-content">
+			        <div class="card-body">
+			          <div class="media d-flex">
+			            <div class="media-body text-center">
+			                <h4>{{server_name}} is OFFLINE</h4>
+			            </div>
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+		</script>
 
-        <script type="text/x-template" id="dedi-online-template">
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card">
-                  <div class="card-content">
-                    <div class="card-body">
-                      <div class="media d-flex">
-                        <dedi-name :server_name=server_name :mod_name=mod_name :dedi_port=dedi_port></dedi-name>
-                        <dedi-session :server_session=server_session :server_session_time_left=server_session_time_left :dedi_port=dedi_port></dedi-session>
-                        <dedi-driver :server_number_drivers=server_number_drivers :dedi_port=dedi_port></dedi-driver>
-                      </div>
-                    </div>
-                    <div class="media d-flex">
-                        <div class="media-body text-left">
-                            <select size='12' multiple v-model="selected_drivers">
-                                <option
-                                    v-for="driver in orderedDrivers"
-                                    :value="{id: driver.driverName}"
-                                    :style="{ background: driver.driverOnTrack ? 'white' : 'grey', color: driver.driverPenalty ? 'red' : 'black' }">
-                                    {{driver.driverName}} - {{driver.driverLaps}} laps{{driver.driverPenalty ? ' - penalty' : ''}} - {{driver.driverOnTrack ? 'on track' : 'in garage'}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="media-body text-right">
-                            <span><clear-penalty-button :dedi_port=dedi_port :selected_drivers=selected_drivers>Clear Penalty</clear-penalty-button></span>
-                            <span><driver-nav-button class="btn-outline-danger" :pods=pods :selected_drivers=selected_drivers nav_action=leave>Driver Leave</driver-nav-button></span>
-                            <span><driver-nav-button class="btn-outline-success" :pods=pods :selected_drivers=selected_drivers nav_action=go>Driver Go</driver-nav-button></span>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </script>
+		<script type="text/x-template" id="dedi-nav-button-template">
+			<button type="button" class="btn" @click="sendDediNav(dedi_port,nav_action)"><slot></slot></button>
+		</script>
 
-        <script type="text/x-template" id="dedi-offline-template">
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card" style="background-color:#A8B0B3">
-                  <div class="card-content">
-                    <div class="card-body">
-                      <div class="media d-flex">
-                        <div class="media-body text-center">
-                            <h4>{{server_name}} is OFFLINE</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </script>
+		<script type="text/x-template" id="pod-list-template">
+			<div class="col-xl-3 col-sm-6 col-12">
+			    <div class="card">
+			        <div class="card-content">
+			            <div class="card-body">
+			                <div class="media d-flex">
+			                    <h4>{{mod_name}}</h4>
+			                </div>
+			                <div class="media d-flex">
+			                    <div class="media-body text-left">
+			                        <select
+			                            size='12'
+			                            style="width: 250px"
+			                            multiple v-model=selected_pods>
+			                            <option
+			                                v-for="pod in pods"
+			                                :value=pod>
+			                                Pod {{pod.podId}} - {{pod.carNameModel}} - {{pod.carNameDetail}}
+			                            </option>
+			                        </select>
+			                    </div>
+			                    <div class="media-body text-right">
+			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(selected_pods,'leave')">Pod Leave</button></span>
+			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(selected_pods,'go')">Pod Go</button></span>
+			                        <span><button type="button" class="btn btn-outline-success" @click="autoAssignLivery(selected_pods)">Auto Livery</button></span>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</script>
 
-        <script type="text/x-template" id="dedi-name-template">
-            <div class="media-body text-left">
-                <h4>{{server_name}}</h4>
-                <span>{{mod_name}}</span>
-                <span class="btn btn-outline-warning">
-                    <dedi-nav-button
-                        :dedi_port=dedi_port
-                        nav_action="NAV_RESTART_WEEKEND">Restart Weekend
-                    </dedi-nav-button>
-                </span>
-            </div>
-        </script>
-
-
-        <script type="text/x-template" id="dedi-session-template">
-            <div class="media-body text-center">
-                <h4>{{server_session}}</h4>
-                <span>{{server_session_time_left}} left</span>
-                <span class="btn btn-outline-secondary">
-                    <dedi-nav-button
-                        :dedi_port=dedi_port
-                        nav_action="NAV_RESTART_RACE">Restart Race
-                    </dedi-nav-button>
-                </span>
-              </div>
-        </script>
-
-
-        <script type="text/x-template" id="dedi-driver-template">
-            <div class="media-body text-center">
-                <h4>{{server_number_drivers}} Drivers</h4>
-                <span class="btn btn-outline-success">
-                    <dedi-nav-button
-                        :dedi_port=dedi_port
-                        nav_action="NAV_FINISH_SESSION">Next Session
-                    </dedi-nav-button>
-                </span>
-                <span class="btn btn-outline-danger">
-                    <dedi-nav-button
-                        :dedi_port=dedi_port
-                        nav_action="NAV_RESTART_RACE">Red Flag
-                    </dedi-nav-button>
-                </span>
-              </div>
-        </script>
-
-        <script type="text/x-template" id="clear-penalty-button-template">
-            <button type="button" class="btn btn-outline-success" @click="clearPenalty(selected_drivers,dedi_port)">Clear Penalty</button>
-        </script>
-
-        <script type="text/x-template" id="dedi-nav-button-template">
-            <button type="button" class="btn" @click="sendDediNav(dedi_port,nav_action)"><slot></slot></button>
-        </script>
-
-        <script type="text/x-template" id="driver-nav-button-template">
-            <button type="button" class="btn" @click="sendDriverNav(pods,selected_drivers,nav_action)"><slot></slot></button>
-        </script>
-
-
-
-        <script type="text/x-template" id="pod-list-template">
-            <h4>{{track_name}}</h4>
-            <select
-                size='12'
-                multiple v-model=track_name>
-                <option
-                    v-for="pod in podsByTrack(track_name)"
-                    :value="{id: pod.podId}">
-                    {{pod.podId}} - {{pod.carNameModel}} - {{pod.carNameDetail}}
-                </option>
-            </select>
-        </script>
-
-        <script src="https://unpkg.com/vue@3"></script>
-        <script src="https://unpkg.com/vuex"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-        <script src="app.js"></script>
-    </body>
+		<script src="https://unpkg.com/vue@3"></script>
+		<script src="https://unpkg.com/vuex"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+		<script src="app.js"></script>
+	</body>
 </html>

@@ -20,7 +20,7 @@
 - dedi metadata
   - track
   - car(s)
-  - session type (qualiy/practice/warmup/race)
+  - session type (quali/practice/warmup/race)
   - session time
 - list of drivers
   - ctrl/shift/multi select available
@@ -120,6 +120,6 @@
 
 to do
 - test save button mapping presets and change via api possible?
-- test if we can change a dedi setting in player.json, then restart weekend to take effect (ie practice start time)
+- test if we can change a dedi setting in player.json, then restart weekend to take effect (ie practice start time) --- nope
 - add laps completed of total to race session on dedi card (ie 7 of 10)
 - 
