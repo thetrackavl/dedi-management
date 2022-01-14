@@ -345,7 +345,8 @@ Vue.createApp({
 						}
 					}
 					// populate nav state
-					let nav_url = proxy_prefix + "/nav/pod/?pod_id=" + pod.podId;
+					let nav_url =
+						proxy_prefix + "/nav/pod/?pod_id=" + pod.podId;
 					axios
 						.get(nav_url, { timeout: 500 })
 						.then(function (response) {
@@ -665,31 +666,36 @@ Vue.createApp({
 		props: ["mod_name", "pods"],
 		watch: {
 			pods: function (oldPods, newPods) {
-				populateCars(newPods[0]);
+				try {
+					this.populateCars(newPods[0]);
+				} catch (error) {
+					console.log(error);
+				}
 			},
 		},
 		methods: {
 			populateCars: function (pod) {
 				let cars = this.cars;
+				// cars = {};
 				let cars_url = proxy_prefix + "/race/car/?pod_id=" + pod.podId;
-				console.log(cars_url);
+				// console.log(cars_url);
 				axios
 					.get(cars_url, { timeout: 1500 })
 					.then(function (response) {
 						let car_list = response.data;
 						car_list.forEach(function (car, index, car_list) {
-							console.log(cars);
+							// console.log(cars);
 							let car_livery = car["name"];
 							let car_id = car["id"];
-							console.log(car["fullPathTree"]);
+							// console.log(car["fullPathTree"]);
 							cars[car["fullPathTree"]] = {};
 							cars[car["fullPathTree"]]["livery_array"] = [];
 						});
 						car_list.forEach(function (car, index, car_list) {
-							console.log(cars);
+							// console.log(cars);
 							let car_livery = car["name"];
 							let car_id = car["id"];
-							console.log(car["fullPathTree"]);
+							// console.log(car["fullPathTree"]);
 							cars[car["fullPathTree"]][car_livery] = car_id;
 							cars[car["fullPathTree"]]["livery_array"].push(
 								car_id
@@ -698,7 +704,7 @@ Vue.createApp({
 					});
 			},
 			sendPodNav: function (selected_pods, nav_action) {
-				console.log(selected_pods);
+				// console.log(selected_pods);
 				selected_pods.forEach(function (pod, index, selected_pods) {
 					var url =
 						proxy_prefix +
@@ -720,13 +726,29 @@ Vue.createApp({
 			},
 			autoAssignLivery: function (selected_pods, car_name) {
 				console.log(selected_pods);
+				cars = this.cars;
 				selected_pods.forEach(function (pod, index, selected_pods) {
-					var url =
-						proxy_prefix +
-						"/race/car/?pod_id=" +
-						pod.podId +
-						"&car_id=" +
-						cars[car_name]["livery_array"][pods.podId];
+					try {
+						let car_index = pod.podId - 1;
+						if (
+							cars[car_name]["livery_array"].length <
+							pod.podId
+						) {
+							car_index =
+								(pod.podId %
+								cars[car_name]["livery_array"].length);
+						}
+						console.log("car index is: " + car_index);
+						var url =
+							proxy_prefix +
+							"/race/car/?pod_id=" +
+							pod.podId +
+							"&car_id=" +
+							cars[car_name]["livery_array"][car_index];
+					} catch (error) {
+						console.log(error);
+					}
+					console.log(url);
 					axios
 						.post(url, { timeout: 500 })
 						.then(function (response) {})
@@ -735,13 +757,17 @@ Vue.createApp({
 							// console.log(error);
 						});
 				});
+				this.showCarSelectionModal = false;
+				this.selected_car = "";
 			},
 		},
 		computed: {},
 		data() {
 			return {
 				cars: {},
-				pods_in_mod: [],
+				selected_pods: [],
+				showCarSelectionModal: false,
+				selected_car: "",
 			};
 		},
 	})

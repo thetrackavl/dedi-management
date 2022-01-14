@@ -10,13 +10,6 @@
 			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 			crossorigin="anonymous"
 		/>
-		<!-- JavaScript Bundle with Popper -->
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-			crossorigin="anonymous"
-		></script>
-		<link href="nav.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div class="row h-100">
@@ -143,7 +136,7 @@
 					</div>
 				</div>
 			</div> -->
-			<div class="col-md-9">
+			<div class="col-fluid">
 				<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
 					<!-- <div class="container-md border" id="page"> -->
 					<div class="row">
@@ -266,6 +259,33 @@
 		</script>
 
 		<script type="text/x-template" id="pod-list-template">
+			<div v-if="showCarSelectionModal" @close="showCarSelectionModal = false">
+				<div class="modal-dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">Choose a car</h5>
+							<button type="button" class="close" @click="showCarSelectionModal = false" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<select v-model="selected_car">
+									<option
+										v-for="(car,index) in Object.keys(cars)"
+										:value="{id: car}">
+									{{car}}
+									</option>
+								</select>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" @click="showCarSelectionModal = false">Cancel</button>
+							<button type="button" class="btn btn-outline-success" @click="autoAssignLivery(selected_pods,selected_car.id)">Apply Livery</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="col-xl-3 col-sm-6 col-12">
 			    <div class="card">
 			        <div class="card-content">
@@ -289,7 +309,7 @@
 			                    <div class="media-body text-right">
 			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(selected_pods,'leave')">Pod Leave</button></span>
 			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(selected_pods,'go')">Pod Go</button></span>
-			                        <span><button type="button" class="btn btn-outline-success" @click="autoAssignLivery(selected_pods)">Auto Livery</button></span>
+			                        <span><button type="button" class="btn btn-outline-success" @click="showCarSelectionModal = true">Auto Livery</button></span>
 			                    </div>
 			                </div>
 			            </div>
@@ -298,6 +318,19 @@
 			</div>
 		</script>
 
+		<!-- JavaScript Bundle with Popper -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- <link href="nav.css" rel="stylesheet" /> -->
 		<script src="https://unpkg.com/vue@3"></script>
 		<script src="https://unpkg.com/vuex"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>

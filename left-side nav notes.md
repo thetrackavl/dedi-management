@@ -1,0 +1,132 @@
+## left-side nav notes
+
+- list
+  - all pod lists first
+  - then separator
+  - then all dedis running dedis with > 0 drivers
+  - then separator
+  - then all dedis running with 0 drivers
+  - then separator
+  - then inactive dedis
+- pod list nav shows
+  - mod name - /rest/race/selection -> series->name
+  - number of drivers (in a pill?)
+- active dedi shows
+  - server name (ie custom 1) - /rest/watch/sessionInfo -> playerFileName
+  - mod name - /rest/race/selection -> series->name
+  - number of drivers
+  - color coded
+    - session type
+      - practice (flash < 30 min)
+      - quali (flash < 20 min)
+      - warm up (flash < 30 min)
+      - race
+  - alert if any car is 'in garage'
+- legend of color coding
+
+## display on nav selection
+- pod list
+  - server mod
+  - number of pods
+  - server state
+  - list of cars available
+  - track selected
+  - pod list
+    - pod id
+    - currently selected car model
+    - currently selected car number if possible (substring the numbers after # if present)
+    - current driver name - /rest/profile -> 'name'
+  - on single select
+    - pod id
+    - driver name
+    - current car model
+    - current car livery
+    - current car number
+    - current button config
+    - current car setup
+    - current assist states
+      - transmission
+      - tc
+      - abs
+      - stability
+      - clutch
+  - buttons
+    - vehicle selection
+      - list cars
+      - on car select
+        - offer auto livery
+        - auto track avl livery (if available)
+        - manual livery
+          - iterate selected pods and present list of liveries to choose from while presenting thumbnails
+    - button config change
+      - present list of configs having removed the adv/std suffixes
+      - when applying choose the appropriate version based on pod id (maybe set adv or std as a pod aspect in data)
+    - change assists
+      - pre-populate with sane defaults or maybe the first pod's current settings
+    - change other parameter button
+      - provide list of all available?
+      - need to test if all of these actually work 'on the fly'
+- active dedi
+  - dedi name
+  - mod name
+  - session type
+  - time remaining in session
+  - race settings
+    - start time
+    - duration (laps or time)
+    - start type
+  - settings
+    - fuel usage
+    - tire usage
+    - damage percentage
+  - driver list
+    - sorted by position in session
+    - name
+    - pod id
+    - car model
+    - car number
+    - on track or not
+    - penalty?
+    - laps completed
+    - on single select
+      - pod id
+      - driver name
+      - current car model
+      - current car livery
+      - current car number
+      - current button config
+      - current car setup
+      - current assist states
+        - transmission
+        - tc
+        - abs
+        - stability
+        - clutch
+      - penalty(ies)
+      - laps completed
+      - fastest lap
+      - last lap time
+      - other metrics?
+  - buttons
+    - change button map
+    - change assists
+
+## components
+- nav items
+  - pod list
+  - active dedi
+  - active dedi no drivers?
+  - inactive dedi
+- display items
+  - pod list
+  - active dedi
+
+## create a framework for api-based data population
+- provide endpoint to call and any body values
+- specify pod or dedi call
+- indicate parameters to be populated by the call and mapping to api return values
+- frequency of population
+- values for those params on failure
+- number of consecutive errors to consider a failure
+- back off timing on calls after failure
+- 

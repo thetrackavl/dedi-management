@@ -21,9 +21,9 @@ def run():
     threading.Timer(0.5, run).start()
     dbh = mysql.connector.connect(
         host="thetrackavl.com",
-        user="uoqhvyagpzjlw",
-        password=",1@1l46zc@U5",
-        database="db6vhiq6rebm7j"
+        user="redacted",
+        password="redacted",
+        database="redacted"
         )
     dbCurs = dbh.cursor(buffered=True)
 
