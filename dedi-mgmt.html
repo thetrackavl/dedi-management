@@ -30,7 +30,7 @@
 					>
 						<a
 							v-for="dedi in onlineDedis"
-                                                        v-bind:key="dedi.serverName"
+							v-bind:key="dedi.serverName"
 							v-on:click="activateTab(dedi.serverName)"
 							v-bind:class="[ activeTab == dedi.serverName ? 'active' : '' ]"
 							class="nav nav-link"
@@ -46,7 +46,7 @@
 						<a
 							v-for="mod in distinctMods()"
 							v-on:click="activateTab(mod)"
-                                                        v-bind:key="mod"
+							v-bind:key="mod"
 							v-bind:class="[ activeTab == mod ? 'active' : '' ]"
 							class="nav-link"
 							style="cursor:pointer"
@@ -61,7 +61,7 @@
 				</div>
 				<div class="col-9">
 					<div class="tab-content">
-                                            <dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
+						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
 					</div>
 				</div>
 			</div>

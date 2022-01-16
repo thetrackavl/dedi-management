@@ -151,14 +151,15 @@ const DediApp = Vue.createApp({
 				// console.log("starting dedi: " + dedi.dediId + " " + dedi.apiFailSession);
 				try {
 					// console.log(dedis[index])
-					app.manageData(
-						app.updateDediSession,
-						app.errorDediSession,
-						dedis[index],
-						dedi.dediPort,
-						"apiFailSession",
-						"apiCountdownSession"
-					)
+					app
+						.manageData(
+							app.updateDediSession,
+							app.errorDediSession,
+							dedis[index],
+							dedi.dediPort,
+							"apiFailSession",
+							"apiCountdownSession"
+						)
 						.then((dataObj) => {
 							dedis[index] = dataObj;
 						})
@@ -167,14 +168,15 @@ const DediApp = Vue.createApp({
 							// console.log(e);
 						});
 					// console.log(dedis[index]);
-					app.manageData(
-						app.updateDediStandings,
-						app.errorDediStandings,
-						dedis[index],
-						dedi.dediPort,
-						"apiFailStandings",
-						"apiCountdownStandings"
-					)
+					app
+						.manageData(
+							app.updateDediStandings,
+							app.errorDediStandings,
+							dedis[index],
+							dedi.dediPort,
+							"apiFailStandings",
+							"apiCountdownStandings"
+						)
 						.then((dataObj) => {
 							dedis[index] = dataObj;
 						})
@@ -193,42 +195,45 @@ const DediApp = Vue.createApp({
 			var app = this;
 			this.pods.forEach(function (pod, index, pods) {
 				try {
-					app.manageData(
-						app.updatePodNav,
-						app.errorPodNav,
-						pods[index],
-						pod.podId,
-						"apiFailNav",
-						"apiCountdownNav"
-					)
+					app
+						.manageData(
+							app.updatePodNav,
+							app.errorPodNav,
+							pods[index],
+							pod.podId,
+							"apiFailNav",
+							"apiCountdownNav"
+						)
 						.then((dataObj) => {
 							pods[index] = dataObj;
 						})
 						.catch((e) => {
 							// console.log(e);
 						});
-					app.manageData(
-						app.updatePodSession,
-						app.errorPodSession,
-						pods[index],
-						pod.podIp,
-						"apiFailSession",
-						"apiCountdownSession"
-					)
+					app
+						.manageData(
+							app.updatePodSession,
+							app.errorPodSession,
+							pods[index],
+							pod.podIp,
+							"apiFailSession",
+							"apiCountdownSession"
+						)
 						.then((dataObj) => {
 							pods[index] = dataObj;
 						})
 						.catch((e) => {
 							// console.log(e);
 						});
-					app.manageData(
-						app.updatePodRaceSelection,
-						app.errorPodRaceSelection,
-						pods[index],
-						pod.podId,
-						"apiFailRaceSelection",
-						"apiCountdownRaceSelection"
-					)
+					app
+						.manageData(
+							app.updatePodRaceSelection,
+							app.errorPodRaceSelection,
+							pods[index],
+							pod.podId,
+							"apiFailRaceSelection",
+							"apiCountdownRaceSelection"
+						)
 						.then((dataObj) => {
 							pods[index] = dataObj;
 						})
@@ -295,9 +300,7 @@ const DediApp = Vue.createApp({
 				// console.log("caught error " + dataObj[failKey]);
 				dataObj[failKey]++;
 				if (dataObj[failKey] >= failMax) {
-					dataObj[countdownKey] = Math.floor(
-						Math.random() * countdown
-					);
+					dataObj[countdownKey] = Math.floor(Math.random() * countdown);
 				}
 				// return dataObj;
 			}
@@ -321,8 +324,7 @@ const DediApp = Vue.createApp({
 						dedi.serverName = rawData.playerFileName;
 						dedi.serverSession = rawData.session;
 						dedi.serverSessionTimeLeft = new Date(
-							(rawData.endEventTime - rawData.currentEventTime) *
-								1000
+							(rawData.endEventTime - rawData.currentEventTime) * 1000
 						)
 							.toISOString()
 							.substr(11, 8);
@@ -359,12 +361,9 @@ const DediApp = Vue.createApp({
 							var driver = {};
 							driver.driverName = driver_raw.driverName;
 							driver.driverPosition = driver_raw.position;
-							driver.driverPenalty =
-								driver_raw.penalties > 0 ? true : false;
+							driver.driverPenalty = driver_raw.penalties > 0 ? true : false;
 							driver.driverLaps = driver_raw.lapsCompleted;
-							driver.driverOnTrack = driver_raw.inGarageStall
-								? false
-								: true;
+							driver.driverOnTrack = driver_raw.inGarageStall ? false : true;
 							driver.driverInPit = driver_raw.pitting;
 							drivers.push(driver);
 						});
@@ -399,8 +398,7 @@ const DediApp = Vue.createApp({
 		},
 		updatePodSession: function (podIp) {
 			return new Promise(function (resolve, reject) {
-				let session_url =
-					proxy_prefix + "/session/?ip=" + podIp + "&port=5397";
+				let session_url = proxy_prefix + "/session/?ip=" + podIp + "&port=5397";
 				let pod = {};
 				axios
 					.get(session_url, { timeout: 500 })
@@ -439,8 +437,7 @@ const DediApp = Vue.createApp({
 							" - " +
 							race_selection_data["track"]["name"];
 						pod.carNameDetail = race_selection_data["car"]["name"];
-						pod.carNameModel =
-							race_selection_data["car"]["fullPathTree"];
+						pod.carNameModel = race_selection_data["car"]["fullPathTree"];
 						pod.modName = race_selection_data["series"]["name"];
 
 						resolve(pod);
@@ -485,22 +482,22 @@ const DediApp = Vue.createApp({
 		orderedDrivers: function (drivers) {
 			return _.orderBy(drivers, "driverPosition");
 		},
-                activeTabDedi: function () {
-                  const app = this;
-                  return this. onlineDedis.find(dedi => dedi.serverName = app.activeTab);
-                }
+		activeTabDedi: function () {
+			const app = this;
+			return this.onlineDedis.find((dedi) => (dedi.serverName = app.activeTab));
+		},
 	},
-})
+});
 
-DediApp.component('dedi-tab', {
-  template: `
+DediApp.component("dedi-tab", {
+	template: `
     <div>
       {{dedi.serverName}} - {{dedi.modName}}
     </div>
   `,
-  props: {
-    dedi: Object
-  }
-})
+	props: {
+		dedi: Object,
+	},
+});
 
-DediApp.mount('#app')
+DediApp.mount("#app");
