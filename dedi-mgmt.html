@@ -30,13 +30,14 @@
 					>
 						<a
 							v-for="dedi in onlineDedis"
+                                                        v-bind:key="dedi.serverName"
 							v-on:click="activateTab(dedi.serverName)"
 							v-bind:class="[ activeTab == dedi.serverName ? 'active' : '' ]"
 							class="nav nav-link"
 							style="cursor:pointer"
-							id="dedi.serverName"
+							v-bind:id="dedi.serverName"
 							data-toggle="tab"
-							href="#dedi.serverName"
+                                                        v-bind:href="`#${dedi.serverName}`"
 							role="tab"
 							aria-controls="v-tabs-home"
 							aria-selected="true"
@@ -45,10 +46,11 @@
 						<a
 							v-for="mod in distinctMods()"
 							v-on:click="activateTab(mod)"
+                                                        v-bind:key="mod"
 							v-bind:class="[ activeTab == mod ? 'active' : '' ]"
 							class="nav-link"
 							style="cursor:pointer"
-							id="mod"
+							v-bind:id="mod"
 							data-toggle="tab"
 							role="tab"
 							aria-controls="v-tabs-home"
@@ -59,9 +61,7 @@
 				</div>
 				<div class="col-9">
 					<div class="tab-content">
-						<div v-for="dedi in onlineDedis" id="dedi.serverName" class="tab-pane fade">
-							{{dedi.modName}}
-						</div>
+                                            <dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
 					</div>
 				</div>
 			</div>
