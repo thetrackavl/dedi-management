@@ -129,4 +129,16 @@
 - values for those params on failure
 - number of consecutive errors to consider a failure
 - back off timing on calls after failure
-- 
+
+
+
+
+## more thoughts
+- incorporate logging member time
+  - on the pod list, when a driver name matches a member
+    - pop up a thing to say 'Want to log this?'
+      - show benefits available to the driver
+      - show benefits logged recently (last 7 days + highlight today)
+      - choose drop-in, hot-laps, etc
+      - quantity to log
+      - confirm
