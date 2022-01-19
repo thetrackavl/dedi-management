@@ -6,7 +6,7 @@ var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
 var countdownDefault = 10;
 var apiFailMax = 5;
 
-Vue.createApp({
+const DediApp = Vue.createApp({
 	mounted: function () {
 		this.interval = setInterval(() => this.updateDediInfo(), 1000);
 		this.interval = setInterval(() => this.updatePodInfo(), 1000);
@@ -462,10 +462,10 @@ Vue.createApp({
 			let vm = this;
 			let pod_list = this.pods;
 			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
-			// return mod_list;
 			return mod_list.filter(
 				(mod) => mod != "error" && vm.podsByMod(mod).length > 0
 			);
+			// return mod_list;
 		},
 		activateTab: function (identifier) {
 			this.activeTab = identifier;
@@ -486,5 +486,24 @@ Vue.createApp({
 		orderedDrivers: function (drivers) {
 			return _.orderBy(drivers, "driverPosition");
 		},
+		activeTabDedi: function () {
+			const app = this;
+			return this.onlineDedis.find(
+				(dedi) => (dedi.serverName = app.activeTab)
+			);
+		},
 	},
-}).mount("#app");
+});
+
+DediApp.component("dedi-tab", {
+	template: `
+    <div>
+      {{dedi.serverName}} - {{dedi.modName}}
+    </div>
+  `,
+	props: {
+		dedi: Object,
+	},
+});
+
+DediApp.mount("#app");

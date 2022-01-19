@@ -2,7 +2,7 @@ const express = require("express");
 const request = require("request");
 const axios = require("axios");
 
-var default_api_ip = "192.168.2.102";
+var default_api_ip = process.env.API_IP || "192.168.2.102";
 
 var pod_driver_map = {};
 
