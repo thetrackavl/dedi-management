@@ -28,6 +28,18 @@
 						role="tablist"
 						aria-orientation="vertical"
 					>
+						<pod-list-item v-for="pod in pods"
+						v-bind:key="pod.podId"
+						v-bind:pod="pod"
+						v-bind:class="[ activateTab == pod.podId ? 'active' : '' ]"
+						v-on:click="activateTab(pod.podId)"
+						class="nav nav-link"
+						style="cursor:pointer"
+						data-toggle="tab"
+						v-bind:href="`#${pod.id}`"
+						role="tab"
+						aria-controls="v-tab-home"
+						aria-selected="true" />
 						<a
 							v-for="dedi in onlineDedis"
 							v-bind:key="dedi.serverName"
@@ -61,11 +73,17 @@
 				</div>
 				<div class="col-9">
 					<div class="tab-content">
-						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
+						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab > -1">
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<script id="pod-list-item" type="text/x-template">
+			<a>Pod {{pod.podId}}{{pod.modName ? ` - ${pod.modName}` : ''}}
+				<span v-if="pod.errored" class="badge bg-danger">Error</span>
+			</a>
+		</script>
 
 		<!-- JavaScript Bundle with Popper -->
 		<script
@@ -85,6 +103,7 @@
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+		<script src="./models/pod.js"></script>
 		<script src="dedi-mgmt.js"></script>
 	</body>
 </html>

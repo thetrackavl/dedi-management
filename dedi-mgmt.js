@@ -6,6 +6,58 @@ var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
 var countdownDefault = 10;
 var apiFailMax = 5;
 
+const defaultPodData = [
+	{
+		podId: 1,
+		podIp: "192.168.1.101",
+		modName: "Mod",
+	},
+	{
+		podId: 2,
+		podIp: "192.168.1.102",
+	},
+	{
+		podId: 3,
+		podIp: "192.168.1.103",
+	},
+	{
+		podId: 4,
+		podIp: "192.168.1.104",
+	},
+	{
+		podId: 5,
+		podIp: "192.168.1.105",
+	},
+	{
+		podId: 6,
+		podIp: "192.168.1.106",
+	},
+	{
+		podId: 7,
+		podIp: "192.168.1.107",
+	},
+	{
+		podId: 8,
+		podIp: "192.168.1.108",
+	},
+	{
+		podId: 9,
+		podIp: "192.168.1.109",
+	},
+	{
+		podId: 10,
+		podIp: "192.168.1.110",
+	},
+	{
+		podId: 11,
+		podIp: "192.168.1.111",
+	},
+	{
+		podId: 12,
+		podIp: "192.168.1.112",
+	},
+];
+
 const DediApp = Vue.createApp({
 	mounted: function () {
 		this.interval = setInterval(() => this.updateDediInfo(), 1000);
@@ -14,56 +66,7 @@ const DediApp = Vue.createApp({
 	data() {
 		return {
 			activeTab: undefined,
-			pods: [
-				{
-					podId: 1,
-					podIp: "192.168.1.101",
-				},
-				{
-					podId: 2,
-					podIp: "192.168.1.102",
-				},
-				{
-					podId: 3,
-					podIp: "192.168.1.103",
-				},
-				{
-					podId: 4,
-					podIp: "192.168.1.104",
-				},
-				{
-					podId: 5,
-					podIp: "192.168.1.105",
-				},
-				{
-					podId: 6,
-					podIp: "192.168.1.106",
-				},
-				{
-					podId: 7,
-					podIp: "192.168.1.107",
-				},
-				{
-					podId: 8,
-					podIp: "192.168.1.108",
-				},
-				{
-					podId: 9,
-					podIp: "192.168.1.109",
-				},
-				{
-					podId: 10,
-					podIp: "192.168.1.110",
-				},
-				{
-					podId: 11,
-					podIp: "192.168.1.111",
-				},
-				{
-					podId: 12,
-					podIp: "192.168.1.112",
-				},
-			],
+			pods: defaultPodData.map((pd) => new Pod(pd)),
 			dedis: [
 				{
 					dediId: 0,
@@ -378,6 +381,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodNav: function (pod) {
+			pod.onError(new PodError("Pod Nav Error"));
 			pod.podNavState = "error";
 		},
 		updatePodNav: function (podId) {
@@ -396,6 +400,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodSession: function (pod) {
+			pod.onError(new PodError("Pod Session Error"));
 			pod.podDriver = "error";
 		},
 		updatePodSession: function (podIp) {
@@ -420,10 +425,10 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodRaceSelection: function (pod) {
+			pod.onError(new PodError("Pod Race Error"));
 			pod.trackName = "error";
 			pod.carNameDetail = "error";
 			pod.carNameModel = "error";
-			pod.modName = "error";
 		},
 		updatePodRaceSelection: function (podId) {
 			return new Promise(function (resolve, reject) {
@@ -492,6 +497,13 @@ const DediApp = Vue.createApp({
 				(dedi) => (dedi.serverName = app.activeTab)
 			);
 		},
+	},
+});
+
+DediApp.component("pod-list-item", {
+	template: "#pod-list-item",
+	props: {
+		pod: Pod,
 	},
 });
 
