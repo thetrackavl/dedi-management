@@ -13,7 +13,7 @@ const DediApp = Vue.createApp({
 	},
 	data() {
 		return {
-			activeTab: -1,
+			activeTab: undefined,
 			pods: [
 				{
 					podId: 1,
