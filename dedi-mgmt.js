@@ -478,15 +478,13 @@ const DediApp = Vue.createApp({
 	},
 	computed: {
 		onlineDedis: function () {
-			return _.orderBy(
-				this.dedis.filter((dedi) => dedi.serverUp >= 0),
-				"serverUp",
-				"desc"
-			);
+			return this.dedis;
+			// return _.orderBy(
+			// 	this.dedis.filter((dedi) => dedi.serverUp >= 0),
+			// 	"serverUp",
+			// 	"desc"
+			// );
 			// return this.dedis;
-		},
-		orderedDedis: function () {
-			return _.orderBy(this.dedis, "serverUp", "desc");
 		},
 		orderedDrivers: function (drivers) {
 			return _.orderBy(drivers, "driverPosition");

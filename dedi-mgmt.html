@@ -80,7 +80,7 @@
 		</div>
 
 		<script id="pod-list-item" type="text/x-template">
-			<a>Pod {{pod.podId}}{{pod.modName ? ` - ${pod.modName}` : ''}}
+			<a class="">Pod {{pod.podId}}{{pod.modName ? ` - ${pod.modName}` : ''}}
 				<span v-if="pod.errored" class="badge bg-danger">Error</span>
 			</a>
 		</script>
