@@ -463,15 +463,6 @@ const DediApp = Vue.createApp({
 				return pod.modName == mod_name && pod.podDriver == "loading";
 			});
 		},
-		distinctMods: function () {
-			let vm = this;
-			let pod_list = this.pods;
-			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
-			return mod_list.filter(
-				(mod) => mod != "error" && vm.podsByMod(mod).length > 0
-			);
-			// return mod_list;
-		},
 		activateTab: function (identifier) {
 			this.activeTab = identifier;
 		},
@@ -485,6 +476,15 @@ const DediApp = Vue.createApp({
 			// 	"desc"
 			// );
 			// return this.dedis;
+		},
+		distinctMods: function () {
+			let vm = this;
+			let pod_list = this.pods;
+			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
+			return mod_list.filter(
+				(mod) => mod != "error" && vm.podsByMod(mod).length > 0
+			);
+			// return mod_list;
 		},
 		orderedDrivers: function (drivers) {
 			return _.orderBy(drivers, "driverPosition");
@@ -507,7 +507,7 @@ DediApp.component("pod-list-item", {
 
 DediApp.component("dedi-tab", {
 	template: `
-    <div>
+    <div class="card">
       {{dedi.serverName}} - {{dedi.modName}}
     </div>
   `,

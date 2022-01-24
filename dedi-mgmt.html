@@ -10,6 +10,9 @@
 			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 			crossorigin="anonymous"
 		/>
+		<link	href="styles/root.css" type="text/css" rel="stylesheet" />
+		<link	href="styles/main.css" type="text/css" rel="stylesheet" />
+		<link href="styles/nav.css" type="text/css" rel="stylesheet" />
 		<style>
 			active {
 				background: black
@@ -20,26 +23,14 @@
 	<body>
 		<div id="app">
 			<div class="row">
-				<div class="col-3">
+				<div class="col-3 col-container">
 					<!-- Tab navs -->
 					<div
-						class="nav flex-column nav-tabs text-center"
+						class="nav flex-column nav-tabs text-center card"
 						id="v-tabs-tab"
 						role="tablist"
 						aria-orientation="vertical"
 					>
-						<pod-list-item v-for="pod in pods"
-						v-bind:key="pod.podId"
-						v-bind:pod="pod"
-						v-bind:class="[ activateTab == pod.podId ? 'active' : '' ]"
-						v-on:click="activateTab(pod.podId)"
-						class="nav nav-link"
-						style="cursor:pointer"
-						data-toggle="tab"
-						v-bind:href="`#${pod.id}`"
-						role="tab"
-						aria-controls="v-tab-home"
-						aria-selected="true" />
 						<a
 							v-for="dedi in onlineDedis"
 							v-bind:key="dedi.serverName"
@@ -56,7 +47,7 @@
 							>{{dedi.serverName}} - {{dedi.modName}}</a
 						>
 						<a
-							v-for="mod in distinctMods()"
+							v-for="mod in distinctMods"
 							v-on:click="activateTab(mod)"
 							v-bind:key="mod"
 							v-bind:class="[ activeTab == mod ? 'active' : '' ]"
@@ -71,9 +62,9 @@
 						>
 					</div>
 				</div>
-				<div class="col-9">
+				<div class="col-9 col-container">
 					<div class="tab-content">
-						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab > -1">
+						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
 					</div>
 				</div>
 			</div>
