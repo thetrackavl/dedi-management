@@ -20,10 +20,10 @@ class Pod {
 		podIp,
 	}) {
 		if (!podId) {
-			throw new Error("missing required podId");
+			throw new Error("missing required property `podId` on Pod");
 		}
 		if (!podIp) {
-			throw new Error("missing required podIp");
+			throw new Error("missing required property `podIp` on Pod");
 		}
 		this.podId = podId;
 		this.podIp = podIp;

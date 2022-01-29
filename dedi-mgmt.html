@@ -13,53 +13,35 @@
 		<link	href="styles/root.css" type="text/css" rel="stylesheet" />
 		<link	href="styles/main.css" type="text/css" rel="stylesheet" />
 		<link href="styles/nav.css" type="text/css" rel="stylesheet" />
-		<style>
-			active {
-				background: black
-			}
-
-		</style>
 	</head>
 	<body>
 		<div id="app">
 			<div class="row">
 				<div class="col-3 col-container">
 					<!-- Tab navs -->
-					<div
-						class="nav flex-column nav-tabs text-center card"
-						id="v-tabs-tab"
-						role="tablist"
-						aria-orientation="vertical"
-					>
-						<a
-							v-for="dedi in onlineDedis"
-							v-bind:key="dedi.serverName"
-							v-on:click="activateTab(dedi.serverName)"
-							v-bind:class="[ activeTab == dedi.serverName ? 'active' : '' ]"
-							class="nav nav-link"
-							style="cursor:pointer"
-							v-bind:id="dedi.serverName"
-							data-toggle="tab"
-							v-bind:href="`#${dedi.serverName}`"
-							role="tab"
-							aria-controls="v-tabs-home"
-							aria-selected="true"
-							>{{dedi.serverName}} - {{dedi.modName}}</a
+					<div class="card flex-column">
+						<div
+							class="nav flex-column nav-tabs text-center p-2"
+							id="v-tabs-tab"
+							role="tablist"
+							aria-orientation="vertical"
 						>
-						<a
-							v-for="mod in distinctMods"
-							v-on:click="activateTab(mod)"
-							v-bind:key="mod"
-							v-bind:class="[ activeTab == mod ? 'active' : '' ]"
-							class="nav-link"
-							style="cursor:pointer"
-							v-bind:id="mod"
-							data-toggle="tab"
-							role="tab"
-							aria-controls="v-tabs-home"
-							aria-selected="true"
-							>{{mod}}</a
-						>
+							<dedi-nav-button
+								v-for="dedi in onlineDedis"
+								v-bind:key="dedi.dediId"
+								v-bind:dedi="dedi"
+								v-bind:activeTab="activateTab"
+								v-on:click="activateTab(dedi.serverName)"
+								/>
+							<hr v-if="distinctMods && distinctMods.length > 0" />
+							<mod-nav-button
+								v-for="mod in distinctMods"
+								v-bind:key="mod.modName"
+								v-bind:mod="mod"
+								v-bind:pods="pods"
+								v-on:click="activateTab(mod.modName)"
+								v-bind:activeTab="activeTab" />
+						</div>
 					</div>
 				</div>
 				<div class="col-9 col-container">
@@ -70,11 +52,25 @@
 			</div>
 		</div>
 
-		<script id="pod-list-item" type="text/x-template">
-			<a class="">Pod {{pod.podId}}{{pod.modName ? ` - ${pod.modName}` : ''}}
-				<span v-if="pod.errored" class="badge bg-danger">Error</span>
-			</a>
+		<script id="mod-nav-button" type="text/x-template">
+			<button class="nav-link rounded-pill" :class="{'ctive': isActive}" :id="target" data-bs-toggle="pill" :data-bs-target="`#${target}`" type="button" :aria-controls="target" :aria-selected="isActive">
+				{{mod.modName}}
+				<br v-if="pods.length > 0" />
+				<span v-if="pods.length > 0" class="badge rounded-pill pod-pill">{{pods.length}}</span>
+			</button>
 		</script>
+
+		<script id="dedi-nav-button" type="text/x-template">
+			<button class="nav-link rounded-pill" :class="{'active': isActive, 'dedi-error': dedi.errored}" :id="target" data-bs-toggle="pill" :data-bs-target="`#${target}`" type="button" :aria-controls="target" :aria-selected="isActive">
+				<span v-if="dedi.errored" class="position-relative top-10 start-0 translate-middle badge bg-danger">
+					<span class="visually-hidden">New alerts</span>
+				</span>
+				{{dedi.serverName}}
+				<br />
+				{{dedi.modName}}
+			</button>
+		</script>
+
 
 		<!-- JavaScript Bundle with Popper -->
 		<script
@@ -95,6 +91,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 		<script src="./models/pod.js"></script>
+		<script src="./models/dedi.js"></script>
+		<script src="./models/mod.js"></script>
 		<script src="dedi-mgmt.js"></script>
 	</body>
 </html>

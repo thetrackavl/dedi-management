@@ -1,6 +1,7 @@
 const express = require("express");
 const request = require("request");
 const axios = require("axios");
+const TESTING = process.env.TESTING || false;
 
 var default_api_ip = process.env.API_IP || "192.168.2.102";
 
@@ -269,7 +270,7 @@ app.post("/race/car", (req, res) => {
 });
 
 app.get("/options/mapping", (res, req) => {
-    let driver_api_port = 5397;
+	let driver_api_port = 5397;
 	let driver_api_ip = req.query.ip || pod_ip(req.query.pod_id);
 
 	let api_url =
