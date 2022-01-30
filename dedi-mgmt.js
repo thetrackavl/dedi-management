@@ -6,6 +6,136 @@ var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
 var countdownDefault = 10;
 var apiFailMax = 5;
 
+const defaultPodData = [
+	{
+		podId: 1,
+		podIp: "192.168.1.101",
+		modName: "Mod",
+	},
+	{
+		podId: 2,
+		podIp: "192.168.1.102",
+	},
+	{
+		podId: 3,
+		podIp: "192.168.1.103",
+	},
+	{
+		podId: 4,
+		podIp: "192.168.1.104",
+	},
+	{
+		podId: 5,
+		podIp: "192.168.1.105",
+	},
+	{
+		podId: 6,
+		podIp: "192.168.1.106",
+	},
+	{
+		podId: 7,
+		podIp: "192.168.1.107",
+	},
+	{
+		podId: 8,
+		podIp: "192.168.1.108",
+	},
+	{
+		podId: 9,
+		podIp: "192.168.1.109",
+	},
+	{
+		podId: 10,
+		podIp: "192.168.1.110",
+	},
+	{
+		podId: 11,
+		podIp: "192.168.1.111",
+	},
+	{
+		podId: 12,
+		podIp: "192.168.1.112",
+	},
+];
+
+const defaultDedi = [
+	{
+		dediId: 0,
+		serverName: "SchedA1",
+		dediPort: "31298",
+	},
+	{
+		dediId: 1,
+		serverName: "SchedA2",
+		dediPort: "32298",
+	},
+	{
+		dediId: 2,
+		serverName: "SchedB1",
+		dediPort: "33298",
+	},
+	{
+		dediId: 3,
+		serverName: "SchedB2",
+		dediPort: "34298",
+	},
+	{
+		dediId: 4,
+		serverName: "SchedC1",
+		dediPort: "35298",
+	},
+	{
+		dediId: 5,
+		serverName: "SchedC2",
+		dediPort: "36298",
+	},
+	{
+		dediId: 6,
+		serverName: "Custom1",
+		dediPort: "51298",
+	},
+	{
+		dediId: 7,
+		serverName: "Drop-In",
+		dediPort: "51301",
+	},
+	{
+		dediId: 8,
+		serverName: "Custom2",
+		dediPort: "52298",
+	},
+	{
+		dediId: 9,
+		serverName: "RookieLeague",
+		dediPort: "52301",
+	},
+	{
+		dediId: 10,
+		serverName: "Custom3",
+		dediPort: "53298",
+	},
+	{
+		dediId: 11,
+		serverName: "ProLeague2",
+		dediPort: "53301",
+	},
+	{
+		dediId: 12,
+		serverName: "Custom4",
+		dediPort: "54298",
+	},
+	{
+		dediId: 13,
+		serverName: "ProLeague1",
+		dediPort: "54301",
+	},
+	{
+		dediId: 14,
+		serverName: "Enduro",
+		dediPort: "54351",
+	},
+];
+
 const DediApp = Vue.createApp({
 	mounted: function () {
 		this.interval = setInterval(() => this.updateDediInfo(), 1000);
@@ -14,133 +144,8 @@ const DediApp = Vue.createApp({
 	data() {
 		return {
 			activeTab: undefined,
-			pods: [
-				{
-					podId: 1,
-					podIp: "192.168.1.101",
-				},
-				{
-					podId: 2,
-					podIp: "192.168.1.102",
-				},
-				{
-					podId: 3,
-					podIp: "192.168.1.103",
-				},
-				{
-					podId: 4,
-					podIp: "192.168.1.104",
-				},
-				{
-					podId: 5,
-					podIp: "192.168.1.105",
-				},
-				{
-					podId: 6,
-					podIp: "192.168.1.106",
-				},
-				{
-					podId: 7,
-					podIp: "192.168.1.107",
-				},
-				{
-					podId: 8,
-					podIp: "192.168.1.108",
-				},
-				{
-					podId: 9,
-					podIp: "192.168.1.109",
-				},
-				{
-					podId: 10,
-					podIp: "192.168.1.110",
-				},
-				{
-					podId: 11,
-					podIp: "192.168.1.111",
-				},
-				{
-					podId: 12,
-					podIp: "192.168.1.112",
-				},
-			],
-			dedis: [
-				{
-					dediId: 0,
-					serverName: "SchedA1",
-					dediPort: "31298",
-				},
-				{
-					dediId: 1,
-					serverName: "SchedA2",
-					dediPort: "32298",
-				},
-				{
-					dediId: 2,
-					serverName: "SchedB1",
-					dediPort: "33298",
-				},
-				{
-					dediId: 3,
-					serverName: "SchedB2",
-					dediPort: "34298",
-				},
-				{
-					dediId: 4,
-					serverName: "SchedC1",
-					dediPort: "35298",
-				},
-				{
-					dediId: 5,
-					serverName: "SchedC2",
-					dediPort: "36298",
-				},
-				{
-					dediId: 6,
-					serverName: "Custom1",
-					dediPort: "51298",
-				},
-				{
-					dediId: 7,
-					serverName: "Drop-In",
-					dediPort: "51301",
-				},
-				{
-					dediId: 8,
-					serverName: "Custom2",
-					dediPort: "52298",
-				},
-				{
-					dediId: 9,
-					serverName: "RookieLeague",
-					dediPort: "52301",
-				},
-				{
-					dediId: 10,
-					serverName: "Custom3",
-					dediPort: "53298",
-				},
-				{
-					dediId: 11,
-					serverName: "ProLeague2",
-					dediPort: "53301",
-				},
-				{
-					dediId: 12,
-					serverName: "Custom4",
-					dediPort: "54298",
-				},
-				{
-					dediId: 13,
-					serverName: "ProLeague1",
-					dediPort: "54301",
-				},
-				{
-					dediId: 14,
-					serverName: "Enduro",
-					dediPort: "54351",
-				},
-			],
+			pods: defaultPodData.map((pd) => new Pod(pd)),
+			dedis: defaultDedi.map((dediData) => new Dedi(dediData)),
 		};
 	},
 	methods: {
@@ -304,12 +309,8 @@ const DediApp = Vue.createApp({
 			return dataObj;
 		},
 		errorDediSession: function (dedi) {
-			dedi.serverName = "error";
-			dedi.serverSession = "error";
-			dedi.serverSessionTimeLeft = "error";
-			dedi.serverNumberDrivers = "error";
+			dedi.onError(new DediError("Dedi Standings Errors"));
 			dedi.serverUp = "error";
-			dedi.modName = "error";
 		},
 		updateDediSession: function (dediPort) {
 			return new Promise(function (resolve, reject) {
@@ -341,6 +342,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorDediStandings: function (dedi) {
+			dedi.onError(new DediError("Dedi Standings Errors"));
 			dedi.drivers = [];
 		},
 		updateDediStandings: function (dediPort) {
@@ -378,6 +380,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodNav: function (pod) {
+			pod.onError(new PodError("Pod Nav Error"));
 			pod.podNavState = "error";
 		},
 		updatePodNav: function (podId) {
@@ -396,7 +399,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodSession: function (pod) {
-			pod.podDriver = "error";
+			pod.onError(new PodError("Pod Session Error"));
 		},
 		updatePodSession: function (podIp) {
 			return new Promise(function (resolve, reject) {
@@ -420,10 +423,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodRaceSelection: function (pod) {
-			pod.trackName = "error";
-			pod.carNameDetail = "error";
-			pod.carNameModel = "error";
-			pod.modName = "error";
+			pod.onError(new PodError("Pod Race Error"));
 		},
 		updatePodRaceSelection: function (podId) {
 			return new Promise(function (resolve, reject) {
@@ -458,15 +458,6 @@ const DediApp = Vue.createApp({
 				return pod.modName == mod_name && pod.podDriver == "loading";
 			});
 		},
-		distinctMods: function () {
-			let vm = this;
-			let pod_list = this.pods;
-			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
-			return mod_list.filter(
-				(mod) => mod != "error" && vm.podsByMod(mod).length > 0
-			);
-			// return mod_list;
-		},
 		activateTab: function (identifier) {
 			this.activeTab = identifier;
 		},
@@ -480,8 +471,14 @@ const DediApp = Vue.createApp({
 			);
 			// return this.dedis;
 		},
-		orderedDedis: function () {
-			return _.orderBy(this.dedis, "serverUp", "desc");
+		distinctMods: function () {
+			let vm = this;
+			let pod_list = this.pods;
+			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
+			return mod_list
+				.filter((mod) => mod != "error" && vm.podsByMod(mod).length > 0)
+				.map((m) => new Mod(m));
+			// return mod_list;
 		},
 		orderedDrivers: function (drivers) {
 			return _.orderBy(drivers, "driverPosition");
@@ -495,9 +492,51 @@ const DediApp = Vue.createApp({
 	},
 });
 
+DediApp.component("mod-nav-button", {
+	template: "#mod-nav-button",
+	props: {
+		mod: Mod,
+		pods: Array,
+		activeTab: [String, undefined],
+	},
+	computed: {
+		target: function () {
+			return this.mod ? this.mod.modName.split(" ").join("-") : "";
+		},
+		isActive: function () {
+			return this.activeTab === this.mod.Modname;
+		},
+	},
+});
+
+DediApp.component("dedi-nav-button", {
+	template: "#dedi-nav-button",
+	props: {
+		dedi: Dedi,
+		activeTab: [String, undefined],
+	},
+	computed: {
+		target: function () {
+			return this.dedi.serverName
+				? this.dedi.serverName.split(" ").join("-")
+				: "";
+		},
+		isActive: function () {
+			return this.activeTab === this.dedi.serverName;
+		},
+	},
+});
+
+DediApp.component("pod-list-item", {
+	template: "#pod-list-item",
+	props: {
+		pod: Pod,
+	},
+});
+
 DediApp.component("dedi-tab", {
 	template: `
-    <div>
+    <div class="card">
       {{dedi.serverName}} - {{dedi.modName}}
     </div>
   `,

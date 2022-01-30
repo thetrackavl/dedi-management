@@ -1,0 +1,25 @@
+#v-tabs-tab {
+	min-height: 95vh;
+	overflow-y: scroll;
+}
+
+#v-tabs-tab hr {
+	border-top: 4px solid #000;
+}
+
+.nav-tabs .nav-link {
+	margin-top: 1em;
+	color: #fff;
+	background: none;
+	background-color: var(--darkest-blue);
+}
+.nav-tabs .nav-link.active {
+	color: #fff;
+	background: none;
+	background-color: var(--purple);
+}
+
+.pod-pill {
+	background-color: var(--teal);
+	color: #000;
+}

@@ -1,0 +1,13 @@
+html,
+body {
+	background-color: var(--darkest-blue);
+}
+
+.card {
+	background-color: var(--card-bg);
+	border-radius: 10px;
+}
+
+.col-container {
+	padding: 1em;
+}
