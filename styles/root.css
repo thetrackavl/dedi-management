@@ -4,3 +4,7 @@
 	--purple: #724479;
 	--teal: #3effe8;
 }
+
+::-webkit-scrollbar {
+	display: none;
+}

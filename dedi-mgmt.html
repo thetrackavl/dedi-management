@@ -10,8 +10,8 @@
 			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 			crossorigin="anonymous"
 		/>
-		<link	href="styles/root.css" type="text/css" rel="stylesheet" />
-		<link	href="styles/main.css" type="text/css" rel="stylesheet" />
+		<link href="styles/root.css" type="text/css" rel="stylesheet" />
+		<link href="styles/main.css" type="text/css" rel="stylesheet" />
 		<link href="styles/nav.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
@@ -32,21 +32,27 @@
 								v-bind:dedi="dedi"
 								v-bind:activeTab="activateTab"
 								v-on:click="activateTab(dedi.serverName)"
-								/>
-							<hr v-if="distinctMods && distinctMods.length > 0" />
+							/>
+							<hr
+								v-if="distinctMods && distinctMods.length > 0"
+							/>
 							<mod-nav-button
 								v-for="mod in distinctMods"
 								v-bind:key="mod.modName"
 								v-bind:mod="mod"
 								v-bind:pods="pods"
 								v-on:click="activateTab(mod.modName)"
-								v-bind:activeTab="activeTab" />
+								v-bind:activeTab="activeTab"
+							/>
 						</div>
 					</div>
 				</div>
 				<div class="col-9 col-container">
 					<div class="tab-content">
-						<dedi-tab v-bind:dedi="activeTabDedi" v-if="activeTab">
+						<dedi-tab
+							v-for="dedi in onlineDedis"
+							v-bind:dedi="dedi"
+						/>
 					</div>
 				</div>
 			</div>
@@ -71,6 +77,11 @@
 			</button>
 		</script>
 
+		<script id="dedi-tab" type="text/x-template">
+			<div class="tab-pane fade" :class="{'show active': isActive}">
+
+			</div>
+		</script>
 
 		<!-- JavaScript Bundle with Popper -->
 		<script

@@ -7,6 +7,10 @@
 	border-top: 4px solid #000;
 }
 
+.nav-tabs {
+	border-bottom: none;
+}
+
 .nav-tabs .nav-link {
 	margin-top: 1em;
 	color: #fff;

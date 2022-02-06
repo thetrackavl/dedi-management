@@ -1,9 +1,27 @@
 const express = require("express");
 const request = require("request");
-const axios = require("axios");
+let axios = require("axios");
 const TESTING = process.env.TESTING || false;
 
 var default_api_ip = process.env.API_IP || "192.168.2.102";
+
+if (TESTING) {
+	axios = axios.create();
+	axios.interceptors.request.use(
+		(req) => {
+			const [_http, _, _host, ...rest] = req.url.split("/");
+			req = {
+				...req,
+				url: `http://${default_api_ip}:5397/${rest.join("/")}`,
+			};
+			return req;
+		},
+		(err) => {
+			console.log(err);
+			return Promise.reject(err);
+		}
+	);
+}
 
 var pod_driver_map = {};
 
@@ -69,7 +87,7 @@ app.get("/standings", (req, res) => {
 		})
 		.catch((err) => {
 			// Handle Error Here
-			// console.error(err);
+			console.error(err);
 			return res.status(408).json({ type: "error", message: err });
 		});
 });
