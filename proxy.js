@@ -87,7 +87,6 @@ app.get("/standings", (req, res) => {
 		})
 		.catch((err) => {
 			// Handle Error Here
-			console.error(err);
 			return res.status(408).json({ type: "error", message: err });
 		});
 });

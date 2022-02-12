@@ -30,7 +30,7 @@
 								v-for="dedi in onlineDedis"
 								v-bind:key="dedi.dediId"
 								v-bind:dedi="dedi"
-								v-bind:activeTab="activateTab"
+								:active-tab="activateTab"
 								v-on:click="activateTab(dedi.serverName)"
 							/>
 							<hr
@@ -42,17 +42,18 @@
 								v-bind:mod="mod"
 								v-bind:pods="pods"
 								v-on:click="activateTab(mod.modName)"
-								v-bind:activeTab="activeTab"
+								:active-tab="activeTab"
 							/>
 						</div>
 					</div>
 				</div>
 				<div class="col-9 col-container">
 					<div class="tab-content">
-						<dedi-tab
+						<!-- <dedi-tab
 							v-for="dedi in onlineDedis"
 							v-bind:dedi="dedi"
-						/>
+							:active-tab="activeTab"
+						/> -->
 					</div>
 				</div>
 			</div>
@@ -79,7 +80,9 @@
 
 		<script id="dedi-tab" type="text/x-template">
 			<div class="tab-pane fade" :class="{'show active': isActive}">
-
+				<div class="card">
+					{{dedi.serverName}} - {{dedi.modName}}
+				</div>
 			</div>
 		</script>
 

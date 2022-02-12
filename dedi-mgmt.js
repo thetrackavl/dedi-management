@@ -535,13 +535,15 @@ DediApp.component("pod-list-item", {
 });
 
 DediApp.component("dedi-tab", {
-	template: `
-    <div class="card">
-      {{dedi.serverName}} - {{dedi.modName}}
-    </div>
-  `,
+	template: "#dedi-tab",
 	props: {
 		dedi: Object,
+		activeTab: [String, undefined],
+	},
+	computed: {
+		isActive: function () {
+			return this.activateTab === this.dedi.serverName;
+		},
 	},
 });
 
