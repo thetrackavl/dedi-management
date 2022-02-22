@@ -48,6 +48,11 @@ class Pod {
 	onSuccess() {
 		this.errored = false;
 	}
+
+	update(data) {
+		const updated_data = Object.assign({}, this, data);
+		return new Pod(updated_data);
+	}
 }
 
 class PodError extends Error {

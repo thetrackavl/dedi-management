@@ -295,6 +295,7 @@ const DediApp = Vue.createApp({
 					dataObj[key] = tempVal[key];
 				});
 				dataObj[failKey] = 0;
+				dataObj = dataObj.update(dataObj);
 				return dataObj;
 			} catch (error) {
 				// console.log("caught error " + dataObj[failKey]);

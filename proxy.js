@@ -12,7 +12,7 @@ if (TESTING) {
 			const [_http, _, _host, ...rest] = req.url.split("/");
 			req = {
 				...req,
-				url: `http://${default_api_ip}:5397/${rest.join("/")}`,
+				url: `http://${default_api_ip}:3030/${rest.join("/")}`,
 			};
 			return req;
 		},

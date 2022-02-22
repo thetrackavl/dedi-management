@@ -65,6 +65,11 @@ class Dedi {
 	onSuccess() {
 		this.errored = false;
 	}
+
+	update(data) {
+		const updated_data = Object.assign({}, this, data);
+		return new Dedi(updated_data);
+	}
 }
 
 class DediError extends Error {
