@@ -44,9 +44,50 @@ fastify.post("/navigation/action", async () => {
 	return { navigationDriver: true };
 });
 
-fastify.get("/navigation/action", async () => {
+fastify.post("/navigation/action/NAV_RESTART_WEEKEND", async () => {
+	return { navigationDriver: true };
+});
+
+fastify.post("/navigation/action/NAV_RESTART_RACE", async () => {
+	return { navigationDriver: true };
+});
+
+fastify.post("/navigation/action/NAV_FINISH_SESSION", async () => {
+	return { navigationDriver: true };
+});
+
+fastify.post("/navigation/action/leave", async () => {
+	return { navigationDriver: true };
+});
+
+fastify.post("/navigation/action/go", async () => {
+	return { navigationDriver: true };
+});
+
+fastify.get("/navigation/state", async () => {
 	return { navigationDriverGet: true };
 });
+
+fastify.get(genPath("/race/selection"), async () => {
+  return {raceSelection: 'race selection'};
+});
+
+fastify.get(genPath("/race/car"), async () => {
+  return {raceCar: 'race car'};
+});
+
+fastify.post(genPath("/race/car"), async () => {
+  return {raceCar: 'race car'};
+});
+
+fastify.get(genPath("/options/assign/listconfigurations"), async () => {
+  return {configurations: {}};
+});
+
+fastify.post(genPath("/options/assign/listconfigurations"), async () => {
+  return {configurations: {}};
+});
+
 
 function range(start, end) {
 	return Array.from({ length: end - start + 1 }, (_, i) => start + i);
