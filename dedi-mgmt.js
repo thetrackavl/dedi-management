@@ -144,8 +144,8 @@ const DediApp = Vue.createApp({
 	data() {
 		return {
 			activeTab: undefined,
-			pods: defaultPodData.map((pd) => new Pod(pd)),
-			dedis: defaultDedi.map((dediData) => new Dedi(dediData)),
+			pods: defaultPodData,
+			dedis: defaultDedi
 		};
 	},
 	methods: {
@@ -295,9 +295,9 @@ const DediApp = Vue.createApp({
 					dataObj[key] = tempVal[key];
 				});
 				dataObj[failKey] = 0;
-				dataObj = dataObj.update(dataObj);
 				return dataObj;
 			} catch (error) {
+        console.log(error)
 				// console.log("caught error " + dataObj[failKey]);
 				dataObj[failKey]++;
 				if (dataObj[failKey] >= failMax) {
@@ -310,8 +310,12 @@ const DediApp = Vue.createApp({
 			return dataObj;
 		},
 		errorDediSession: function (dedi) {
-			dedi.onError(new DediError("Dedi Standings Errors"));
+      dedi.serverName = "error";
+			dedi.serverSession = "error";
+			dedi.serverSessionTimeLeft = "error";
+			dedi.serverNumberDrivers = "error";
 			dedi.serverUp = "error";
+			dedi.modName = "error";
 		},
 		updateDediSession: function (dediPort) {
 			return new Promise(function (resolve, reject) {
@@ -343,45 +347,19 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorDediStandings: function (dedi) {
-			dedi.onError(new DediError("Dedi Standings Errors"));
 			dedi.drivers = [];
 		},
-		updateDediStandings: function (dediPort) {
-			return new Promise(function (resolve, reject) {
-				var driver_url = proxy_prefix + "/standings/?port=" + dediPort;
-				let dedi = {};
-				axios
-					.get(driver_url, { timeout: 500 })
-					.then(function (response) {
-						driver_data = response.data;
-						drivers = [];
-						response.data.forEach(function (
-							driver_raw,
-							driver_index,
-							drivers_raw
-						) {
-							var driver = {};
-							driver.driverName = driver_raw.driverName;
-							driver.driverPosition = driver_raw.position;
-							driver.driverPenalty =
-								driver_raw.penalties > 0 ? true : false;
-							driver.driverLaps = driver_raw.lapsCompleted;
-							driver.driverOnTrack = driver_raw.inGarageStall
-								? false
-								: true;
-							driver.driverInPit = driver_raw.pitting;
-							drivers.push(driver);
-						});
-						dedi.drivers = drivers;
-						resolve(dedi);
-					})
-					.catch(function (error) {
-						reject(error);
-					});
-			});
+		updateDediStandings: async function (dediPort) {
+      var driver_url = proxy_prefix + "/standings/?port=" + dediPort;
+      let dedi = {};
+      const response = await axios
+        .get(driver_url, { timeout: 500 })
+        .catch(function (error) {
+          return error
+        });
+      return dedi.drivers = response.data.map(apiResponseToDriver)
 		},
 		errorPodNav: function (pod) {
-			pod.onError(new PodError("Pod Nav Error"));
 			pod.podNavState = "error";
 		},
 		updatePodNav: function (podId) {
@@ -400,7 +378,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodSession: function (pod) {
-			pod.onError(new PodError("Pod Session Error"));
+      pod.podDriver = "error";
 		},
 		updatePodSession: function (podIp) {
 			return new Promise(function (resolve, reject) {
@@ -424,7 +402,10 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodRaceSelection: function (pod) {
-			pod.onError(new PodError("Pod Race Error"));
+      pod.trackName = "error";
+			pod.carNameDetail = "error";
+			pod.carNameModel = "error";
+			pod.modName = "error";
 		},
 		updatePodRaceSelection: function (podId) {
 			return new Promise(function (resolve, reject) {
@@ -513,7 +494,7 @@ DediApp.component("mod-nav-button", {
 DediApp.component("dedi-nav-button", {
 	template: "#dedi-nav-button",
 	props: {
-		dedi: Dedi,
+		dedi: Object,
 		activeTab: [String, undefined],
 	},
 	computed: {

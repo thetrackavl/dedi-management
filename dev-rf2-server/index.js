@@ -15,8 +15,8 @@ fastify.get(genPath("/watch/sessionInfo"), async () => {
 	return {
 		playerFileName: faker.random.words(2),
 		session: faker.helpers.randomize(["practice", "warmup", "race"]),
-		endEventtime: new Date(),
-		currentEventtime: new Date(),
+		endEventTime: new Date(),
+		currentEventTime: new Date(),
 		numberOfvehicles: range(1, 15),
 		serverName: faker.random.words(2),
 		driverName: `${faker.name.firstName()} ${faker.name.lastName()}`,
