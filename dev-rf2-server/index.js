@@ -7,11 +7,11 @@ function genPath(path) {
 	return `${URL_PREFIX}${path}`;
 }
 
-fastify.get("/", async (_request, reply) => {
+fastify.get("/", async () => {
 	return { health: "OK" };
 });
 
-fastify.get(genPath("/watch/sessionInfo"), async (_request, reply) => {
+fastify.get(genPath("/watch/sessionInfo"), async () => {
 	return {
 		playerFileName: faker.random.words(2),
 		session: faker.helpers.randomize(["practice", "warmup", "race"]),
@@ -19,14 +19,14 @@ fastify.get(genPath("/watch/sessionInfo"), async (_request, reply) => {
 		currentEventtime: new Date(),
 		numberOfvehicles: range(1, 15),
 		serverName: faker.random.words(2),
-		driverName: `${faker.name.firstName} ${faker.name.lastName}`,
+		driverName: `${faker.name.firstName()} ${faker.name.lastName()}`,
 	};
 });
 
 fastify.get(genPath("/watch/standings"), async (_request, _reply) => {
 	return range(0, randInRange(6, 10)).map((position) => {
 		return {
-			driverName: `${faker.name.findName} ${faker.name.lastName}`,
+			driverName: `${faker.name.findName()} ${faker.name.lastName()}`,
 			driverPosition: position,
 			penalties: 0,
 			lapsCompleted: randInRange(0, 20),
@@ -65,15 +65,37 @@ fastify.post("/navigation/action/go", async () => {
 });
 
 fastify.get("/navigation/state", async () => {
-	return { navigationDriverGet: true };
+	return { state: {
+    navigationState: 'some state'
+  } };
 });
 
 fastify.get(genPath("/race/selection"), async () => {
-  return {raceSelection: 'race selection'};
+  return {
+    track: {
+      shortName: faker.random.words(),
+      name: faker.random.words(),
+    },
+    car: {
+      name: faker.vehicle.vehicle(),
+      fullPathTree: faker.system.filePath()
+    },
+    series: {
+      name: faker.random.words()
+    }
+  }
 });
 
 fastify.get(genPath("/race/car"), async () => {
-  return {raceCar: 'race car'};
+  return range(0, 10).map(() => {
+    return {
+      name: faker.vehicle.vehicle(),
+      id: faker.random.uuid(),
+      fullPathTree: {
+        livery_array: range(0, 4).map(() => faker.random.uuid())
+      }
+    }
+  })
 });
 
 fastify.post(genPath("/race/car"), async () => {
