@@ -1,0 +1,43 @@
+{
+	"trackName": "Watkins Glen Short NC",
+	"session": "PRACTICE1",
+	"currentEventTime": 422.2,
+	"endEventTime": 3630,
+	"maximumLaps": 2147483647,
+	"lapDistance": 3908.69921875,
+	"numberOfVehicles": 1,
+	"gamePhase": 5,
+	"yellowFlagState": "NONE",
+	"sectorFlag": [
+		"UNKNOWN",
+		"UNKNOWN",
+		"UNKNOWN"
+	],
+	"startLightFrame": 0,
+	"numRedLights": 3,
+	"inRealtime": false,
+	"playerName": "JB R",
+	"playerFileName": "player",
+	"darkCloud": 0,
+	"raining": 0,
+	"ambientTemp": 24,
+	"trackTemp": 24,
+	"windSpeed": {
+		"x": 0,
+		"y": 0,
+		"z": 0,
+		"velocity": 0
+	},
+	"minPathWetness": 0,
+	"averagePathWetness": 0,
+	"maxPathWetness": 0,
+	"gameMode": "UNKNOWN",
+	"passwordProtected": false,
+	"serverPort": 0,
+	"maxPlayers": 0,
+	"serverName": "-none-",
+	"startEventTime": 36000,
+	"raceCompletion": {
+		"timeCompletion": 0.10894444444444444
+	}
+}

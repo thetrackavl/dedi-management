@@ -1,0 +1,41 @@
+{
+	"series": {
+		"shortName": "All Tracks & Cars",
+		"name": "All Tracks & Cars",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id felis eu est feugiat imperdiet eu ut ante. Nullam quis neque sed nunc convallis tincidunt. Morbi sagittis risus in massa volutpat feugiat. Vestibulum mollis ut magna ut sollicitudin. Vivamus tincidunt lobortis velit, sed accumsan sapien eleifend ac. Sed et fringilla nisl. Fusce non felis tortor. Proin fringilla sem ut erat sagittis, eget imperdiet nunc gravida. Cras eget est leo. Ut mollis efficitur ex a tristique. Nam faucibus dolor ut nunc dignissim pellentesque. Phasellus convallis sed eros convallis consequat. Nulla facilisi. Mauris vulputate vulputate purus, eget tempus ligula dignissim quis.",
+		"disabled": false,
+		"signature": "57f050e8a93353917f465845b7e0a261cf694164292512573ad08c1d4fc2ccdb",
+		"version": "1.0"
+	},
+	"track": {
+		"id": "e83023dddefd94f9f918c5dd5d4871c1b3a4e3a3",
+		"shortName": "Watkins Glen International 1.15",
+		"name": "Watkins Glen Short NC",
+		"sceneDesc": "WATKINS_GLEN_SHORT_NC",
+		"year": "1908-1909",
+		"layout": "Lorem ipsum",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id felis eu est feugiat imperdiet eu ut ante. Nullam quis neque sed nunc convallis tincidunt. Morbi sagittis risus in massa volutpat feugiat. Vestibulum mollis ut magna ut sollicitudin. Vivamus tincidunt lobortis velit, sed accumsan sapien eleifend ac. Sed et fringilla nisl. Fusce non felis tortor. Proin fringilla sem ut erat sagittis, eget imperdiet nunc gravida. Cras eget est leo. Ut mollis efficitur ex a tristique. Nam faucibus dolor ut nunc dignissim pellentesque. Phasellus convallis sed eros convallis consequat. Nulla facilisi. Mauris vulputate vulputate purus, eget tempus ligula dignissim quis.",
+		"length": "3.907 km / 2.428 Miles",
+		"type": "Permanent Road Course",
+		"localizations": {},
+		"categoryLocalizations": {},
+		"image": "/rest/race/track/e83023dddefd94f9f918c5dd5d4871c1b3a4e3a3/image",
+		"thumbnail": "/rest/race/track/e83023dddefd94f9f918c5dd5d4871c1b3a4e3a3/thumbnail"
+	},
+	"car": {
+		"id": "c04addb7d62430b2bd547d7af9bbce1b40c90e53",
+		"name": "9 - Noah Gragson 1.24",
+		"description": "This vehicle has a V-8 engine and is manufactured by Camaro.",
+		"bhp": "4 bhp",
+		"usedIn": "1754",
+		"configuration": "Lorem ipsum, Dolor sit amet",
+		"fullPathTree": "Xfinity, 2020",
+		"vehFile": "D:\\steam\\steamapps\\common\\rFactor 2\\Installed\\Vehicles\\Nascar Xfinity Series\\1.24\\Y20-N-GRAGSON-9.VEH",
+		"engine": "V-8",
+		"manufacturer": "Camaro",
+		"localizations": {},
+		"categoryLocalizations": {},
+		"image": "/rest/race/car/c04addb7d62430b2bd547d7af9bbce1b40c90e53/image",
+		"thumbnail": "/rest/race/car/c04addb7d62430b2bd547d7af9bbce1b40c90e53/thumbnail"
+	}
+}

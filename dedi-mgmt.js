@@ -145,7 +145,7 @@ const DediApp = Vue.createApp({
 		return {
 			activeTab: undefined,
 			pods: defaultPodData,
-			dedis: defaultDedi
+			dedis: defaultDedi,
 		};
 	},
 	methods: {
@@ -297,7 +297,7 @@ const DediApp = Vue.createApp({
 				dataObj[failKey] = 0;
 				return dataObj;
 			} catch (error) {
-        console.log(error)
+				console.log(error);
 				// console.log("caught error " + dataObj[failKey]);
 				dataObj[failKey]++;
 				if (dataObj[failKey] >= failMax) {
@@ -310,7 +310,7 @@ const DediApp = Vue.createApp({
 			return dataObj;
 		},
 		errorDediSession: function (dedi) {
-      dedi.serverName = "error";
+			dedi.serverName = "error";
 			dedi.serverSession = "error";
 			dedi.serverSessionTimeLeft = "error";
 			dedi.serverNumberDrivers = "error";
@@ -350,14 +350,17 @@ const DediApp = Vue.createApp({
 			dedi.drivers = [];
 		},
 		updateDediStandings: async function (dediPort) {
-      var driver_url = proxy_prefix + "/standings/?port=" + dediPort;
-      let dedi = {};
-      const response = await axios
-        .get(driver_url, { timeout: 500 })
-        .catch(function (error) {
-          return error
-        });
-      return dedi.drivers = response.data.map(apiResponseToDriver)
+			var driver_url = proxy_prefix + "/standings/?port=" + dediPort;
+			let dedi = {};
+			const response = await axios
+				.get(driver_url, { timeout: 500 })
+				.catch(function (error) {
+					return error;
+				});
+			return (dedi.drivers =
+				response.status === 200
+					? response.data.map(apiResponseToDriver)
+					: []);
 		},
 		errorPodNav: function (pod) {
 			pod.podNavState = "error";
@@ -378,7 +381,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodSession: function (pod) {
-      pod.podDriver = "error";
+			pod.podDriver = "error";
 		},
 		updatePodSession: function (podIp) {
 			return new Promise(function (resolve, reject) {
@@ -402,7 +405,7 @@ const DediApp = Vue.createApp({
 			});
 		},
 		errorPodRaceSelection: function (pod) {
-      pod.trackName = "error";
+			pod.trackName = "error";
 			pod.carNameDetail = "error";
 			pod.carNameModel = "error";
 			pod.modName = "error";

@@ -1,0 +1,18 @@
+[
+	{
+		"id": "aa09c6d35529758cad9d30f1b612f118424e699e",
+		"name": "#00 - HTP Motorsport/Linkin Park (SPA24H) 1.20",
+		"description": "This vehicle has a AMG 6.3-litre V8 front mid-engine engine and is manufactured by Mercedes.",
+		"bhp": "4 bhp",
+		"usedIn": "1754",
+		"configuration": "Lorem ipsum, Dolor sit amet",
+		"fullPathTree": "GT3 World Series, Mercedes AMG GT3, Blancpain Endurance Series 2016",
+		"vehFile": "D:\\steam\\steamapps\\common\\rFactor 2\\Installed\\Vehicles\\STK AMG GT3\\1.20\\16000SP_AMG_GT3.VEH",
+		"engine": "AMG 6.3-litre V8 front mid-engine",
+		"manufacturer": "Mercedes",
+		"localizations": {},
+		"categoryLocalizations": {},
+		"image": "/rest/race/car/aa09c6d35529758cad9d30f1b612f118424e699e/image",
+		"thumbnail": "/rest/race/car/aa09c6d35529758cad9d30f1b612f118424e699e/thumbnail"
+	}
+]
