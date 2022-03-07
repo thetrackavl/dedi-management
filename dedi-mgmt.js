@@ -138,59 +138,64 @@ const defaultDedi = [
 
 const DediApp = Vue.createApp({
 	mounted: function () {
-		this.interval = setInterval(() => this.updateDediInfo(), 1000);
-		this.interval = setInterval(() => this.updatePodInfo(), 1000);
+		this.dediInterval = setInterval(() => this.updateDediInfo(), 1000);
+		this.podInterval = setInterval(() => this.updatePodInfo(), 1000);
 	},
 	data() {
 		return {
 			activeTab: undefined,
 			pods: defaultPodData,
 			dedis: defaultDedi,
+      dediInterval: null,
+      podInterval: null
 		};
 	},
 	methods: {
+    stopInterval: function() {
+      clearInterval(this.podInterval)
+      clearInterval(this.dediInterval)
+      this.podInterval = null;
+      this.dediInterval = null;
+    },
+    restartInterval: function() {
+      this.dediInterval = setInterval(() => this.updateDediInfo(), 1000);
+      this.podInterval = setInterval(() => this.updatePodInfo(), 1000);
+    },
 		updateDediInfo: function () {
 			// console.log("starting dedis");
 			var app = this;
-			this.dedis.forEach(function (dedi, index, dedis) {
-				// console.log("starting dedi: " + dedi.dediId + " " + dedi.apiFailSession);
-				try {
-					// console.log(dedis[index])
-					app.manageData(
+			app.dedis = app.dedis.map(function (dedi) {
+				app.manageData(
 						app.updateDediSession,
 						app.errorDediSession,
-						dedis[index],
+						dedi,
 						dedi.dediPort,
 						"apiFailSession",
 						"apiCountdownSession"
-					)
-						.then((dataObj) => {
-							dedis[index] = dataObj;
-						})
-						.catch((e) => {
+				).then((data) => {
+          console.log('sessiong data', data);
+          dedi = Object.assign({}, dedi, data);
+          console.log('after assign session', dedi);
+        }).catch((e) => {
 							// error
-							// console.log(e);
-						});
-					// console.log(dedis[index]);
-					app.manageData(
+						  console.log('session', e);
+				});
+        app.manageData(
 						app.updateDediStandings,
 						app.errorDediStandings,
-						dedis[index],
+						dedi,
 						dedi.dediPort,
 						"apiFailStandings",
-						"apiCountdownStandings"
-					)
-						.then((dataObj) => {
-							dedis[index] = dataObj;
-						})
-						.catch((e) => {
+						"apiCountdownStandings")
+        .then((data) => {
+          console.log('standing data', data);
+          console.log('before assign standinging', dedi)
+          dedi = Object.assign({}, dedi, data);
+        }).catch((e) => {
 							// error
-							// console.log(e);
-						});
-				} catch (error) {
-					// console.log("error in updateDediInfo:");
-					// console.log(error);
-				}
+						  console.log('session', e);
+				});
+        return dedi;
 			});
 		},
 		updatePodInfo: function () {
@@ -291,11 +296,8 @@ const DediApp = Vue.createApp({
 				let tempVal = await apiFunc(objectKey);
 
 				// console.log('trying to populate data from api');
-				Object.keys(tempVal).forEach(function (key, index, keys) {
-					dataObj[key] = tempVal[key];
-				});
+				dataObj = Object.assign({}, dataObj, tempVal);
 				dataObj[failKey] = 0;
-				return dataObj;
 			} catch (error) {
 				console.log(error);
 				// console.log("caught error " + dataObj[failKey]);
@@ -357,10 +359,11 @@ const DediApp = Vue.createApp({
 				.catch(function (error) {
 					return error;
 				});
-			return (dedi.drivers =
+			dedi.drivers =
 				response.status === 200
 					? response.data.map(apiResponseToDriver)
-					: []);
+					: [];
+			return dedi;
 		},
 		errorPodNav: function (pod) {
 			pod.podNavState = "error";
@@ -448,6 +451,9 @@ const DediApp = Vue.createApp({
 		},
 	},
 	computed: {
+    interval: function() {
+      return this.podInterval && this.dediInterval
+    },
 		onlineDedis: function () {
 			return _.orderBy(
 				this.dedis.filter((dedi) => dedi.serverUp >= 0),

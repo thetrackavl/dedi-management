@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
-    "fastify": "^3.27.2"
+    "fastify": "^3.27.2",
+    "lokijs": "^1.5.12"
   }
 }

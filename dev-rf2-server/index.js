@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import { faker } from "@faker-js/faker";
+import { standingsCollection, sessionCollection } from './db/index.js';
 
 const fastify = Fastify({ logger: true });
 const URL_PREFIX = "/rest";
@@ -11,29 +12,43 @@ fastify.get("/", async () => {
 	return { health: "OK" };
 });
 
-fastify.get(genPath("/watch/sessionInfo"), async () => {
-	return {
-		playerFileName: faker.random.words(2),
-		session: faker.helpers.randomize(["practice", "warmup", "race"]),
-		endEventTime: new Date(),
-		currentEventTime: new Date(),
-		numberOfvehicles: range(1, 15),
-		serverName: faker.random.words(2),
-		driverName: `${faker.name.firstName()} ${faker.name.lastName()}`,
-	};
+fastify.get(genPath("/watch/sessionInfo"), async (request) => {
+  const {id} = request.query;
+  let session = sessionCollection.findOne({ id: id });
+  if (!session) {
+    session = {
+      id: id,
+      playerFileName: faker.random.words(2),
+      session: faker.helpers.randomize(["practice", "warmup", "race"]),
+      endEventTime: new Date().getTime(),
+      currentEventTime: new Date().getTime(),
+      numberOfVehicles: randInRange(1, 15),
+      serverName: faker.random.words(2),
+      driverName: `${faker.name.firstName()} ${faker.name.lastName()}`,
+	  }
+    sessionCollection.insert(session);
+  }
+  return session;
 });
 
-fastify.get(genPath("/watch/standings"), async (_request, _reply) => {
-	return range(0, randInRange(6, 10)).map((position) => {
-		return {
-			driverName: `${faker.name.findName()} ${faker.name.lastName()}`,
-			driverPosition: position,
-			penalties: 0,
-			lapsCompleted: randInRange(0, 20),
-			inGarageStall: null,
-			pitting: false,
-		};
-	});
+fastify.get(genPath("/watch/standings"), async (request, _reply) => {
+  const {id} = request.query;
+  let standings = standingsCollection.find({id: id});
+  if (!standings.length) {
+    standings = range(0, randInRange(6, 10)).map((position) => {
+      return {
+        id: id,
+        driverName: `${faker.name.findName()} ${faker.name.lastName()}`,
+        driverPosition: position,
+        penalties: 0,
+        lapsCompleted: randInRange(0, 20),
+        inGarageStall: null,
+        pitting: false,
+      };
+    })
+    standingsCollection.insert(standings)
+  }
+  return standings;
 });
 
 fastify.post(genPath("/chat"), async () => {
@@ -90,9 +105,9 @@ fastify.get(genPath("/race/car"), async () => {
   return range(0, 10).map(() => {
     return {
       name: faker.vehicle.vehicle(),
-      id: faker.random.uuid(),
+      id: faker.datatype.uuid(),
       fullPathTree: {
-        livery_array: range(0, 4).map(() => faker.random.uuid())
+        livery_array: range(0, 4).map(() => faker.datatype.uuid())
       }
     }
   })

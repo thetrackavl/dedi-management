@@ -16,6 +16,8 @@
 	</head>
 	<body>
 		<div id="app">
+      <button type="button" v-if="interval" v-on:click="stopInterval">Stop</button>
+      <button type="button" v-if="!interval" v-on:click="restartInterval">Start</button>
 			<div class="row">
 				<div class="col-3 col-container">
 					<!-- Tab navs -->

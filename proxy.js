@@ -1,6 +1,7 @@
 const express = require("express");
 const request = require("request");
 let axios = require("axios");
+const { cause } = require("verror");
 const TESTING = process.env.TESTING || false;
 
 var default_api_ip = process.env.API_IP || "192.168.2.102";
@@ -9,10 +10,11 @@ if (TESTING) {
 	axios = axios.create();
 	axios.interceptors.request.use(
 		(req) => {
-			const [_http, _, _host, ...rest] = req.url.split("/");
+			const [_http, _, host, ...rest] = req.url.split("/");
+      
 			req = {
 				...req,
-				url: `http://${default_api_ip}:3030/${rest.join("/")}`,
+				url: `http://${default_api_ip}:3030/${rest.join("/")}?id=${host.replaceAll('.', '').replaceAll(':', '')}`,
 			};
 			return req;
 		},
@@ -44,7 +46,7 @@ var driver_nav_action_map = {
 
 const app = express();
 
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Credentials", true);
