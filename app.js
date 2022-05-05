@@ -1,4 +1,4 @@
-var proxy_ip = "localhost";
+var proxy_ip = "192.168.2.102";
 var proxy_port = "3000";
 
 var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
@@ -583,8 +583,9 @@ Vue.createApp({
 					index,
 					selected_drivers
 				) {
+					console.log(driver);
 					let driver_pod = pods.find(
-						(o) => o.podDriver === driver.id
+						(o) => o.podDriver === driver.driverName
 					);
 					console.log(driver_pod);
 					var url =
