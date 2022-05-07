@@ -550,7 +550,7 @@ Vue.createApp({
 						"/clear-penalty/?port=" +
 						dedi_port +
 						"&driver=" +
-						encodeURIComponent(driver.id);
+						encodeURIComponent(driver.driverName);
 					console.log(url);
 					axios
 						.post(url, { timeout: 500 })
