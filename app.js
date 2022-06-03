@@ -1,7 +1,11 @@
 var proxy_ip = "192.168.2.102";
 var proxy_port = "3000";
+var operations_api_ip = "192.168.2.102";
+var operations_api_port = "5000";
 
 var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
+var operations_api_prefix =
+	"http://" + operations_api_ip + ":" + operations_api_port;
 
 var countdownDefault = 10;
 var apiFailMax = 5;
@@ -9,220 +13,61 @@ var apiFailMax = 5;
 Vue.createApp({
 	mounted: function () {
 		this.interval = setInterval(() => this.updateDediInfo(), 1000);
-		this.interval = setInterval(() => this.updatePodInfo(), 3000);
+		this.interval = setInterval(() => this.updatePodInfo(), 1000);
 		this.interval = setInterval(() => this.updatePodNav(), 1000);
 	},
 	data() {
 		return {
-			pods: [
-				{
-					podId: 1,
-					podIp: "192.168.1.101",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 2,
-					podIp: "192.168.1.102",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 3,
-					podIp: "192.168.1.103",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 4,
-					podIp: "192.168.1.104",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 5,
-					podIp: "192.168.1.105",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 6,
-					podIp: "192.168.1.106",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 7,
-					podIp: "192.168.1.107",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 8,
-					podIp: "192.168.1.108",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 9,
-					podIp: "192.168.1.109",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 10,
-					podIp: "192.168.1.110",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 11,
-					podIp: "192.168.1.111",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-				{
-					podId: 12,
-					podIp: "192.168.1.112",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-					navCountdown: Math.floor(Math.random() * countdownDefault),
-					navApiFail: 0,
-				},
-			],
-			dedis: [
-				{
-					dediId: 0,
-					serverName: "SchedA1",
-					dediPort: "31298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 1,
-					serverName: "SchedA2",
-					dediPort: "32298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 2,
-					serverName: "SchedB1",
-					dediPort: "33298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 3,
-					serverName: "SchedB2",
-					dediPort: "34298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 4,
-					serverName: "SchedC1",
-					dediPort: "35298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 5,
-					serverName: "SchedC2",
-					dediPort: "36298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 6,
-					serverName: "Custom1",
-					dediPort: "51298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 7,
-					serverName: "Drop-In",
-					dediPort: "51301",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 8,
-					serverName: "Custom2",
-					dediPort: "52298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 9,
-					serverName: "RookieLeague",
-					dediPort: "52301",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 10,
-					serverName: "Custom3",
-					dediPort: "53298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 11,
-					serverName: "ProLeague2",
-					dediPort: "53301",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 12,
-					serverName: "Custom4",
-					dediPort: "54298",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 13,
-					serverName: "ProLeague1",
-					dediPort: "54301",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-				{
-					dediId: 14,
-					serverName: "Enduro",
-					dediPort: "54351",
-					apiFail: 0,
-					countdown: Math.floor(Math.random() * countdownDefault),
-				},
-			],
+			pods: [],
+			dedis: [],
+			mods: {},
 		};
 	},
 	methods: {
 		updateDediInfo: function () {
+			let dedisArray = this.dedis;
+			let modsArray = this.mods;
+			let dedisUpdated = [];
+			let dedi_up_url = operations_api_prefix + "/dedi/up";
+			axios
+				.get(dedi_up_url, { timeout: 500 })
+				.then(function (response) {
+					response.data.forEach(function (
+						dediKey,
+						dedi_index,
+						dedis_raw
+					) {
+						dediPort = dediKey.replace("dedi_", "");
+						dedisUpdated.push(dediKey);
+						dediIndex = dedisArray.findIndex(
+							(obj) => obj.dediKey == dediKey
+						);
+						if (dediIndex >= 0) {
+							dedisArray[dediIndex].dediKey = dediKey;
+							dedisArray[dediIndex].dediPort = dediPort;
+						} else {
+							let dediObj = {
+								dediKey: dediKey,
+								dediPort: dediPort,
+							};
+							dedisArray.push(dediObj);
+						}
+					});
+
+					// remove all dedis that are no longer 'up'
+					dedisArray.forEach(function (
+						dedi_raw,
+						dedi_index,
+						dedis_raw
+					) {
+						if (!dedisUpdated.includes(dedi_raw.dediKey)) {
+							dedisArray.splice(dedi_index, 1);
+						}
+					});
+				})
+				.catch(function (error) {
+					console.log("dediUp fail: " + error);
+				});
 			this.dedis.forEach(function (dedi, index, dedis) {
 				try {
 					if (dedi.apiFail > apiFailMax) {
@@ -235,31 +80,33 @@ Vue.createApp({
 							dedis[index].apiFail = apiFailMax - 1;
 						}
 					}
-					var dedi_port = dedi.dediPort;
-					var url = proxy_prefix + "/session/?port=" + dedi_port;
+					var dediKey = dedi.dediKey;
+					var url =
+						operations_api_prefix + "/dedi/session/" + dediKey;
 					axios
 						.get(url, { timeout: 500 })
 						.then(function (response) {
 							// handle success - reset our failure counter
 
 							rawData = response.data;
-							dedis[index].serverName = rawData.playerFileName;
-							dedis[index].serverSession = rawData.session;
-							dedis[index].serverSessionTimeLeft = new Date(
-								(rawData.endEventTime -
-									rawData.currentEventTime) *
-									1000
-							)
-								.toISOString()
-								.substr(11, 8);
+							dedis[index].serverName = rawData.serverName;
+							dedis[index].serverSession = rawData.serverSession;
+							dedis[index].serverSessionTimeLeft =
+								rawData.serverSessionTimeLeft;
 							dedis[index].serverNumberDrivers =
-								rawData.numberOfVehicles;
-							dedis[index].serverUp = rawData.numberOfVehicles;
-							dedis[index].modName = rawData.serverName;
+								rawData.serverNumberDrivers;
+							dedis[index].serverUp = rawData.serverUp;
+							dedis[index].modName = rawData.modName;
+
+							if (!dedis[index].serverUp) {
+								dedis[index].serverUp = -1;
+							}
 
 							//now grab driver info
 							var driver_url =
-								proxy_prefix + "/standings/?port=" + dedi_port;
+								operations_api_prefix +
+								"/dedi/standings/" +
+								dediKey;
 							axios
 								.get(driver_url, { timeout: 1500 })
 								.then(function (response) {
@@ -275,18 +122,22 @@ Vue.createApp({
 										driver.driverName =
 											driver_raw.driverName;
 										driver.driverPosition =
-											driver_raw.position;
+											driver_raw.driverPosition;
 										driver.driverPenalty =
-											driver_raw.penalties > 0
+											driver_raw.driverPenalty > 0
 												? true
 												: false;
 										driver.driverLaps =
-											driver_raw.lapsCompleted;
+											driver_raw.driverLaps;
 										driver.driverOnTrack =
-											driver_raw.inGarageStall
-												? false
-												: true;
-										driver.driverInPit = driver_raw.pitting;
+											driver_raw.onTrack
+												? true
+												: false;
+										driver.driverInPit = driver_raw.driverInPit;
+										driver.steamId = driver_raw.driverSteamId;
+										driver.podId = driver_raw.driverPod;
+										driver.veh = driver_raw.driverVeh;
+										// driverPod
 										drivers.push(driver);
 									});
 									dedis[index].drivers = drivers;
@@ -320,6 +171,13 @@ Vue.createApp({
 							}
 							// console.log(error);
 						});
+					url =
+						operations_api_prefix +
+						"/mod/car/" +
+						dedis[index].modName;
+					axios.get(url, { timeout: 500 }).then(function (response) {
+						modsArray[dedis[index].modName] = response.data;
+					});
 				} catch {
 					dedis[index].apiFail = parseInt(dedis[index].apiFail) + 1;
 					if (dedis[index].apiFail > apiFailMax) {
@@ -331,6 +189,45 @@ Vue.createApp({
 			});
 		},
 		updatePodNav: function () {
+			let podsArray = this.pods;
+			let podsUpdated = [];
+			let pod_up_url = operations_api_prefix + "/pod/up";
+			axios
+				.get(pod_up_url, { timeout: 500 })
+				.then(function (response) {
+					response.data.forEach(function (
+						podKey,
+						pod_index,
+						pod_raw
+					) {
+						podId = podKey.replace("pod_", "");
+
+						podsUpdated.push(podKey);
+						podIndex = podsArray.findIndex(
+							(obj) => obj.podKey == podKey
+						);
+						if (podIndex >= 0) {
+							podsArray[podIndex].podKey = podKey;
+							podsArray[podIndex].podId = podId;
+						} else {
+							let podObj = {
+								podKey: podKey,
+								podId: podId,
+							};
+							podsArray.push(podObj);
+						}
+					});
+
+					// remove all pods that are no longer 'up'
+					podsArray.forEach(function (pod_raw, pod_index, pods_raw) {
+						if (!podsUpdated.includes(pod_raw.podKey)) {
+							podsArray.splice(pod_index, 1);
+						}
+					});
+				})
+				.catch(function (error) {
+					console.log("podUp fail: " + error);
+				});
 			this.pods.forEach(function (pod, index, pods) {
 				// console.log('pod iteration - ' + pod.podId);
 				try {
@@ -346,7 +243,7 @@ Vue.createApp({
 					}
 					// populate nav state
 					let nav_url =
-						proxy_prefix + "/nav/pod/?pod_id=" + pod.podId;
+						operations_api_prefix + "/pod/nav/" + pod.podId;
 					axios
 						.get(nav_url, { timeout: 500 })
 						.then(function (response) {
@@ -400,29 +297,27 @@ Vue.createApp({
 					// populate dedi connection
 					// update dedi-map
 					let session_url =
-						proxy_prefix +
-						"/session/?ip=" +
-						pod.podIp +
-						"&port=5397";
+						operations_api_prefix + "/pod/session/" + pod.podId;
 					axios
 						.get(session_url, { timeout: 1500 })
 						.then(function (response) {
 							pods[index].countdown = 0;
 							let session_data = response.data;
 
-							pods[index].podDriver = session_data.playerName;
+							pods[index].podDriver = session_data.podDriver;
 							if (session_data.playerName == "") {
 								pods[index].podDriver = "loading";
 							}
 							try {
 								let connected_dedi = dedi_arr.find(
-									(o) => o.modName === session_data.serverName
+									(o) => o.modName === session_data.modName
 								);
 								pods[index].serverName =
 									connected_dedi.serverName;
 							} catch {
 								pods[index].serverName = "loading";
 							}
+							pods[index].steamId = session_data.steamId;
 						})
 						.catch(function (error) {
 							// console.log('pod session fail: ' + error);
@@ -435,22 +330,22 @@ Vue.createApp({
 							}
 						});
 					let race_selection_url =
-						proxy_prefix + "/race/selection/?pod_id=" + pod.podId;
+						operations_api_prefix +
+						"/pod/raceselection/" +
+						pod.podId;
 					axios
 						.get(race_selection_url, { timeout: 1500 })
 						.then(function (response) {
 							let race_selection_data = response.data;
 							// console.log(race_selection_data);
 							pods[index].trackName =
-								race_selection_data["track"]["shortName"] +
-								" - " +
-								race_selection_data["track"]["name"];
+								race_selection_data["trackName"];
 							pods[index].carNameDetail =
-								race_selection_data["car"]["name"];
+								race_selection_data["carNameDetail"];
 							pods[index].carNameModel =
-								race_selection_data["car"]["fullPathTree"];
+								race_selection_data["carNameModel"];
 							pods[index].modName =
-								race_selection_data["series"]["name"];
+								race_selection_data["modName"];
 						})
 						.catch(function (error) {
 							// console.log('pod race selection fail: ' + error);
@@ -474,7 +369,10 @@ Vue.createApp({
 		podsByMod: function (mod_name) {
 			let pod_list = this.pods;
 			return pod_list.filter(function (pod) {
-				return pod.modName == mod_name && pod.serverName == "loading";
+				return (
+					pod.modName == mod_name &&
+					pod.podNavState == "NAV_MAIN_MENU"
+				);
 			});
 		},
 		distinctMods: function () {
@@ -529,11 +427,28 @@ Vue.createApp({
 		data() {
 			return {
 				selected_drivers: [],
+				showCarSelectionModal: false,
+				cars: {},
+				showCarSelectionModal: false,
+				selected_car: "",
 			};
+		},
+		mounted: function(){
+			this.populateCars(this.mod_name);
 		},
 		computed: {
 			orderedDrivers: function () {
 				return _.orderBy(this.drivers, "driverPosition");
+			},
+		},
+		watch: {
+			mod_name: function (mod_name) {
+				try {
+					console.log("populate cars for dedi");
+					this.populateCars(mod_name);
+				} catch (error) {
+					console.log(error);
+				}
 			},
 		},
 		methods: {
@@ -546,10 +461,10 @@ Vue.createApp({
 					selected_drivers
 				) {
 					var url =
-						proxy_prefix +
-						"/clear-penalty/?port=" +
+						operations_api_prefix +
+						"/dedi/clearpenalty/" +
 						dedi_port +
-						"&driver=" +
+						"/" +
 						encodeURIComponent(driver.driverName);
 					console.log(url);
 					axios
@@ -587,24 +502,79 @@ Vue.createApp({
 					let driver_pod = pods.find(
 						(o) => o.podDriver === driver.driverName
 					);
+					console.log("driver_pod");
 					console.log(driver_pod);
 					var url =
-						proxy_prefix +
-						"/nav/driver/?ip=" +
-						driver_pod.podIp +
-						"&action=" +
-						nav_action +
-						"&driver_state=" +
-						driver_pod.podNavState;
+						operations_api_prefix + "/pod/nav/" + driver_pod.podId;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500 })
+						.post(url, { timeout: 500, navAction: nav_action })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
 							// console.log(error);
 						});
 				});
+			},
+			populateCars: function (modName) {
+				let cars = this.cars;
+				// cars = {};
+				let cars_url =
+					operations_api_prefix + "/mod/car/" + encodeURIComponent(modName);
+				console.log(cars_url);
+				axios
+					.get(cars_url, { timeout: 1500 })
+					.then(function (response) {
+						let car_list = response.data;
+						Object.entries(car_list).forEach(function (
+							car,
+							index,
+							car_list
+						) {
+							// console.log(car);
+							carName = car[0];
+							cars[carName] = {};
+							// cars[carName]["livery_array"] = car[1]["livery_array"];
+							cars[carName]["car_list"] = car[1]["cars"];
+						});
+						console.log(cars)
+					});
+			},
+			autoAssignLivery: function (selected_drivers, car_name) {
+				console.log(selected_drivers);
+				cars = this.cars;
+				selected_drivers.forEach(function (driver, index, selected_drivers) {
+					console.log(driver);
+					try {
+						let car_index = driver.podId - 1;
+						if (cars[car_name]["car_list"].length < driver.podId) {
+							car_index =
+								driver.podId % cars[car_name]["car_list"].length;
+						}
+						console.log("car index is: " + car_index);
+						var url =
+							operations_api_prefix + "/pod/car/" + driver.podId;
+
+						selected_car =
+							cars[car_name]["car_list"][car_index]["carName"] +
+							"-" +
+							cars[car_name]["car_list"][car_index]["carDetail"];
+
+						console.log(url);
+						console.log(selected_car);
+						axios
+							.post(url, { timeout: 500, car: selected_car })
+							.then(function (response) {})
+							.catch(function (error) {
+								// handle error
+								// console.log(error);
+							});
+					} catch (error) {
+						console.log(error);
+					}
+				});
+				this.showCarSelectionModal = false;
+				this.selected_car = "";
 			},
 		},
 	})
@@ -619,17 +589,10 @@ Vue.createApp({
 			sendPodNav: function (pods_in_track, nav_action) {
 				console.log(pods_in_track);
 				pods_in_track.forEach(function (pod, index, pods_in_track) {
-					var url =
-						proxy_prefix +
-						"/nav/driver/?ip=" +
-						pod.podIp +
-						"&action=" +
-						nav_action +
-						"&driver_state=" +
-						pod.podNavState;
+					var url = operations_api_prefix + "/pod/nav/" + pod.podId;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500 })
+						.post(url, { timeout: 500, navAction: nav_action })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
@@ -666,7 +629,7 @@ Vue.createApp({
 		template: "#pod-list-template",
 		props: ["mod_name", "pods"],
 		watch: {
-			pods: function (oldPods, newPods) {
+			pods: function (newPods) {
 				try {
 					this.populateCars(newPods[0]);
 				} catch (error) {
@@ -678,46 +641,34 @@ Vue.createApp({
 			populateCars: function (pod) {
 				let cars = this.cars;
 				// cars = {};
-				let cars_url = proxy_prefix + "/race/car/?pod_id=" + pod.podId;
+				let cars_url =
+					operations_api_prefix + "/mod/car/" + encodeURIComponent(pod.modName);
 				// console.log(cars_url);
 				axios
 					.get(cars_url, { timeout: 1500 })
 					.then(function (response) {
 						let car_list = response.data;
-						car_list.forEach(function (car, index, car_list) {
-							// console.log(cars);
-							let car_livery = car["name"];
-							let car_id = car["id"];
-							// console.log(car["fullPathTree"]);
-							cars[car["fullPathTree"]] = {};
-							cars[car["fullPathTree"]]["livery_array"] = [];
+						Object.entries(car_list).forEach(function (
+							car,
+							index,
+							car_list
+						) {
+							// console.log(car);
+							carName = car[0];
+							cars[carName] = {};
+							// cars[carName]["livery_array"] = car[1]["livery_array"];
+							cars[carName]["car_list"] = car[1]["cars"];
 						});
-						car_list.forEach(function (car, index, car_list) {
-							// console.log(cars);
-							let car_livery = car["name"];
-							let car_id = car["id"];
-							// console.log(car["fullPathTree"]);
-							cars[car["fullPathTree"]][car_livery] = car_id;
-							cars[car["fullPathTree"]]["livery_array"].push(
-								car_id
-							);
-						});
+						// console.log(cars)
 					});
 			},
 			sendPodNav: function (selected_pods, nav_action) {
-				// console.log(selected_pods);
+				console.log(selected_pods);
 				selected_pods.forEach(function (pod, index, selected_pods) {
-					var url =
-						proxy_prefix +
-						"/nav/driver/?ip=" +
-						pod.podIp +
-						"&action=" +
-						nav_action +
-						"&driver_state=" +
-						pod.podNavState;
+					var url = operations_api_prefix + "/pod/nav/" + pod.podId;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500 })
+						.post(url, { timeout: 500, navAction: nav_action })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
@@ -731,32 +682,31 @@ Vue.createApp({
 				selected_pods.forEach(function (pod, index, selected_pods) {
 					try {
 						let car_index = pod.podId - 1;
-						if (
-							cars[car_name]["livery_array"].length <
-							pod.podId
-						) {
+						if (cars[car_name]["car_list"].length < pod.podId) {
 							car_index =
-								(pod.podId %
-								cars[car_name]["livery_array"].length);
+								pod.podId % cars[car_name]["car_list"].length;
 						}
 						console.log("car index is: " + car_index);
 						var url =
-							proxy_prefix +
-							"/race/car/?pod_id=" +
-							pod.podId +
-							"&car_id=" +
-							cars[car_name]["livery_array"][car_index];
+							operations_api_prefix + "/pod/car/" + pod.podId;
+
+						selected_car =
+							cars[car_name]["car_list"][car_index]["carName"] +
+							"-" +
+							cars[car_name]["car_list"][car_index]["carDetail"];
+
+						console.log(url);
+						console.log(selected_car);
+						axios
+							.post(url, { timeout: 500, car: selected_car })
+							.then(function (response) {})
+							.catch(function (error) {
+								// handle error
+								// console.log(error);
+							});
 					} catch (error) {
 						console.log(error);
 					}
-					console.log(url);
-					axios
-						.post(url, { timeout: 500 })
-						.then(function (response) {})
-						.catch(function (error) {
-							// handle error
-							// console.log(error);
-						});
 				});
 				this.showCarSelectionModal = false;
 				this.selected_car = "";
