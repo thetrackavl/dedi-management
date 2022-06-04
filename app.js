@@ -283,9 +283,9 @@ Vue.createApp({
 										driver.driverLaps =
 											driver_raw.lapsCompleted;
 										driver.driverOnTrack =
-											driver_raw.inGarageStall
-												? false
-												: true;
+											driver_raw.driverOnTrack
+												? true
+												: false;
 										driver.driverInPit = driver_raw.pitting;
 										drivers.push(driver);
 									});
@@ -482,7 +482,7 @@ Vue.createApp({
 			let pod_list = this.pods;
 			let mod_list = [...new Set(pod_list.map((pod) => pod.modName))];
 			return mod_list.filter(
-				(mod) => mod != "none" && vm.podsByMod(mod).length > 0
+				(mod) => mod != "error" && vm.podsByMod(mod).length > 0
 			);
 			// return mod_list.filter(mod => mod != 'none');
 		},
