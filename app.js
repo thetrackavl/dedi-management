@@ -1,9 +1,6 @@
-var proxy_ip = "192.168.2.102";
-var proxy_port = "3000";
 var operations_api_ip = "192.168.2.102";
-var operations_api_port = "5000";
+var operations_api_port = "5016";
 
-var proxy_prefix = "http://" + proxy_ip + ":" + proxy_port;
 var operations_api_prefix =
 	"http://" + operations_api_ip + ":" + operations_api_port;
 
@@ -130,11 +127,11 @@ Vue.createApp({
 										driver.driverLaps =
 											driver_raw.driverLaps;
 										driver.driverOnTrack =
-											driver_raw.onTrack
-												? true
-												: false;
-										driver.driverInPit = driver_raw.driverInPit;
-										driver.steamId = driver_raw.driverSteamId;
+											driver_raw.onTrack ? true : false;
+										driver.driverInPit =
+											driver_raw.driverInPit;
+										driver.steamId =
+											driver_raw.driverSteamId;
 										driver.podId = driver_raw.driverPod;
 										driver.veh = driver_raw.driverVeh;
 										// driverPod
@@ -433,7 +430,7 @@ Vue.createApp({
 				selected_car: "",
 			};
 		},
-		mounted: function(){
+		mounted: function () {
 			this.populateCars(this.mod_name);
 		},
 		computed: {
@@ -505,10 +502,14 @@ Vue.createApp({
 					console.log("driver_pod");
 					console.log(driver_pod);
 					var url =
-						operations_api_prefix + "/pod/nav/" + driver_pod.podId;
+						operations_api_prefix +
+						"/pod/nav/" +
+						driver_pod.podId +
+						"/" +
+						nav_action;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500, navAction: nav_action })
+						.post(url, { timeout: 500 })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
@@ -520,7 +521,9 @@ Vue.createApp({
 				let cars = this.cars;
 				// cars = {};
 				let cars_url =
-					operations_api_prefix + "/mod/car/" + encodeURIComponent(modName);
+					operations_api_prefix +
+					"/mod/car/" +
+					encodeURIComponent(modName);
 				console.log(cars_url);
 				axios
 					.get(cars_url, { timeout: 1500 })
@@ -537,19 +540,24 @@ Vue.createApp({
 							// cars[carName]["livery_array"] = car[1]["livery_array"];
 							cars[carName]["car_list"] = car[1]["cars"];
 						});
-						console.log(cars)
+						console.log(cars);
 					});
 			},
 			autoAssignLivery: function (selected_drivers, car_name) {
 				console.log(selected_drivers);
 				cars = this.cars;
-				selected_drivers.forEach(function (driver, index, selected_drivers) {
+				selected_drivers.forEach(function (
+					driver,
+					index,
+					selected_drivers
+				) {
 					console.log(driver);
 					try {
 						let car_index = driver.podId - 1;
 						if (cars[car_name]["car_list"].length < driver.podId) {
 							car_index =
-								driver.podId % cars[car_name]["car_list"].length;
+								driver.podId %
+								cars[car_name]["car_list"].length;
 						}
 						console.log("car index is: " + car_index);
 						var url =
@@ -589,10 +597,15 @@ Vue.createApp({
 			sendPodNav: function (pods_in_track, nav_action) {
 				console.log(pods_in_track);
 				pods_in_track.forEach(function (pod, index, pods_in_track) {
-					var url = operations_api_prefix + "/pod/nav/" + pod.podId;
+					var url =
+						operations_api_prefix +
+						"/pod/nav/" +
+						pod.podId +
+						"/" +
+						nav_action;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500, navAction: nav_action })
+						.post(url, { timeout: 500 })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
@@ -642,7 +655,9 @@ Vue.createApp({
 				let cars = this.cars;
 				// cars = {};
 				let cars_url =
-					operations_api_prefix + "/mod/car/" + encodeURIComponent(pod.modName);
+					operations_api_prefix +
+					"/mod/car/" +
+					encodeURIComponent(pod.modName);
 				// console.log(cars_url);
 				axios
 					.get(cars_url, { timeout: 1500 })
@@ -665,10 +680,15 @@ Vue.createApp({
 			sendPodNav: function (selected_pods, nav_action) {
 				console.log(selected_pods);
 				selected_pods.forEach(function (pod, index, selected_pods) {
-					var url = operations_api_prefix + "/pod/nav/" + pod.podId;
+					var url =
+						operations_api_prefix +
+						"/pod/nav/" +
+						pod.podId +
+						"/" +
+						nav_action;
 					console.log(url);
 					axios
-						.post(url, { timeout: 500, navAction: nav_action })
+						.post(url, { timeout: 500 })
 						.then(function (response) {})
 						.catch(function (error) {
 							// handle error
