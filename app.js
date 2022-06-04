@@ -478,10 +478,10 @@ Vue.createApp({
 			},
 			sendDediNav: function (dedi_port, nav_action) {
 				var url =
-					proxy_prefix +
-					"/nav/dedi/?port=" +
+					operations_api_prefix +
+					"/dedi/nav/" +
 					dedi_port +
-					"&action=" +
+					"/" +
 					nav_action;
 				// console.log(url);
 				axios
