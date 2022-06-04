@@ -190,6 +190,34 @@
 		</script>
 
 		<script type="text/x-template" id="dedi-online-template">
+			<div v-if="showCarSelectionModal" @close="showCarSelectionModal = false">
+				<div class="modal-dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">Choose a car</h5>
+							<button type="button" class="close" @click="showCarSelectionModal = false" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<select v-model="selected_car">
+									<option
+										v-for="(car,index) in Object.keys(cars)"
+										:value="{id: car}">
+									{{car}}
+									</option>
+								</select>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" @click="showCarSelectionModal = false">Cancel</button>
+							<button v-if="selected_drivers.length > 0" type="button" class="btn btn-outline-success" @click="autoAssignLivery(selected_drivers,selected_car.id)">Apply Livery</button>
+							<button v-if="selected_drivers.length < 1" type="button" class="btn btn-outline-success" @click="autoAssignLivery(drivers,selected_car.id)">Apply Livery</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="col-xl-4 col-sm-6 col-12">
 			    <div class="card">
 			      <div class="card-content">
@@ -221,22 +249,24 @@
 			                <select size='12' multiple v-model="selected_drivers">
 			                    <option
 			                        v-for="driver in orderedDrivers"
-			                        :value="{driverName: driver.driverName}"
+			                        :value="driver"
 			                        :style="{ background: driver.driverOnTrack ? 'white' : 'grey', color: driver.driverPenalty ? 'red' : 'black' }">
-			                        {{driver.driverName}} - {{driver.driverLaps}} laps{{driver.driverPenalty ? ' - penalty' : ''}} - {{driver.driverOnTrack ? 'on track' : 'in garage'}}
+			                        {{driver.veh}} - {{driver.driverName}} - {{driver.driverLaps}} laps{{driver.driverPenalty ? ' - penalty' : ''}} - {{driver.driverOnTrack ? 'on track' : 'in garage'}}
 			                    </option>
 			                </select>
 			            </div>
 			            <div class="media-body text-right">
 							<span v-if="selected_drivers.length > 0" >
 								<span><button type="button" class="btn btn-outline-success" @click="clearPenalty(selected_drivers,dedi_port)">Clear Penalty</button></span>
-								<span><button type="button" class="btn btn-outline-danger" @click="sendDriverNav(pods,selected_drivers,'leave')">Driver Exit</button></span>
-			                	<span><button type="button" class="btn btn-outline-primary" @click="sendDriverNav(pods,selected_drivers,'go')">Driver Enter</button></span>
+								<span><button type="button" class="btn btn-outline-danger" @click="sendDriverNav(pods,selected_drivers,'exit')">Driver Exit</button></span>
+			                	<span><button type="button" class="btn btn-outline-primary" @click="sendDriverNav(pods,selected_drivers,'enter')">Driver Enter</button></span>
+								<span><button type="button" class="btn btn-outline-success" @click="showCarSelectionModal = true">Auto Livery</button></span>
 							</span>
 							<span v-if="selected_drivers.length < 1" >
 								<span><button type="button" class="btn btn-outline-success" @click="clearPenalty(orderedDrivers,dedi_port)">Clear Penalty All</button></span>
-								<span><button type="button" class="btn btn-outline-danger" @click="sendDriverNav(pods,orderedDrivers,'leave')">All Driver Exit</button></span>
-			                	<span><button type="button" class="btn btn-outline-primary" @click="sendDriverNav(pods,orderedDrivers,'go')">All Driver Enter</button></span>
+								<span><button type="button" class="btn btn-outline-danger" @click="sendDriverNav(pods,orderedDrivers,'exit')">All Driver Exit</button></span>
+			                	<span><button type="button" class="btn btn-outline-primary" @click="sendDriverNav(pods,orderedDrivers,'enter')">All Driver Enter</button></span>
+								<span><button type="button" class="btn btn-outline-success" @click="showCarSelectionModal = true">All Auto Livery</button></span>
 							</span>
 			            </div>
 			        </div>
@@ -315,13 +345,13 @@
 			                        </select>
 			                    </div>
 			                    <div v-if="selected_pods.length > 0" class="media-body text-right">
-			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(selected_pods,'leave')">Pod Leave</button></span>
-			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(selected_pods,'go')">Pod Go</button></span>
+			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(selected_pods,'exit')">Pod Exit</button></span>
+			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(selected_pods,'enter')">Pod Enter</button></span>
 			                        <span><button type="button" class="btn btn-outline-success" @click="showCarSelectionModal = true">Auto Livery</button></span>
 			                    </div>
 								<div v-if="selected_pods.length < 1" class="media-body text-right">
-			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(pods,'leave')">All Pods Exit</button></span>
-			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(pods,'go')">All Pods Enter</button></span>
+			                        <span><button type="button" class="btn btn-outline-danger" @click="sendPodNav(pods,'exit')">All Pods Exit</button></span>
+			                        <span><button type="button" class="btn btn-outline-success" @click="sendPodNav(pods,'enter')">All Pods Enter</button></span>
 			                        <span><button type="button" class="btn btn-outline-success" @click="showCarSelectionModal = true">All Auto Livery</button></span>
 			                    </div>
 			                </div>
